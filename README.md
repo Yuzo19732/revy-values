@@ -26,6 +26,8 @@ stored, how each part is protected, and what is worth questioning.
 | `index-readable.html` | **the site's code** — start here |
 | `index.html` | the site exactly as deployed (91% generated data) |
 | `update_*.py`, `own_images.py` | local scripts that generate the site's data |
+| `tools/` | two scripts that let you check the claims made below |
+| `pt-original/` | the untranslated Portuguese originals, for comparison |
 
 ### About the two copies of the site
 
@@ -38,8 +40,16 @@ about 100 KB is actual code.
 - **`index.html`** is byte-identical to what the live site serves. Use it
   to compare against production.
 
-Everything outside the data blocks is identical between the two —
-verified line by line (2,169 lines, zero differences).
+Everything outside the data blocks is identical between the two. You do
+not have to take that on trust:
+
+```
+python tools/readable-copy.py
+```
+
+It normalises both files and compares them line by line — 2,169
+comparable lines, zero differences. `--write` rebuilds the readable copy
+from `index.html`.
 
 ---
 
@@ -94,16 +104,21 @@ translated for this review:
 |---|---|
 | `README.md`, `SECURITY.md`, `SETUP.md` | written in English |
 | `discord/bot/index.ts` | **comments translated, code untouched** |
-| `discord/01-database.sql` | **comments translated, code untouched** |
+| `discord/01-database.sql`, `03-fix-removal.sql` | **comments translated, code untouched** |
 | `index.html` | **verbatim**, comments still in Portuguese |
 | `*.py` scripts | comments still in Portuguese |
 
-Two things worth knowing:
-
 **The bot and the SQL had only their comments rewritten.** Every
-executable line is identical to production — this was verified by
-stripping comments from both versions and diffing: 549 code lines in the
-bot and 97 in the SQL, zero differences.
+executable line is identical to production. The untranslated originals are
+in `pt-original/` so you can confirm it:
+
+```
+python tools/verify-translation.py
+```
+
+It strips every comment from both versions and diffs what is left — 549
+code lines in the bot, 97 and 22 in the SQL, zero differences. Deploy the
+English ones; `pt-original/` is there for reading only.
 
 **`index.html` was left untouched on purpose.** It is byte-identical to
 what the live site serves, so it can be compared against production.
