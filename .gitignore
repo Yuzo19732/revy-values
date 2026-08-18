@@ -1,0 +1,16 @@
+# ── Secrets — never commit ─────────────────────────────────
+discord/credentials.txt
+discord/credenciais.txt
+.env
+*.env
+*.key
+
+# ── Source artwork ─────────────────────────────────────────
+# The site already embeds every image; these are just the originals.
+imagens/
+images/
+
+# ── Local leftovers ────────────────────────────────────────
+site-pronto/
+*.zip
+__pycache__/

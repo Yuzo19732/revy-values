@@ -1,0 +1,2477 @@
+<!-- ===================================================================
+     READABLE COPY — NOT RUNNABLE
+
+     Same file as index.html, with the generated data blocks replaced by
+     a short note. Those blocks are 91% of the original file and contain
+     no logic: base64 artwork, image paths and tags produced by the
+     local scripts.
+
+     Use this copy to read the code. Use index.html (untouched, byte for
+     byte what the live site serves) to compare against production.
+     ================================================================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASTD Trade Values — Tier List</title>
+
+<!-- Favicon: a Two Hands (Revy), recortada no rosto pra continuar
+     reconhecivel nos 16px da aba. Vai embutida na propria pagina, entao
+     nao precisa de arquivo .ico solto junto do index.html. -->
+<link rel="icon" type="image/png" href="data:image/png;base64,[13 KB favicon stripped]">
+
+<!-- Fontes: Outfit (títulos/números) + Plus Jakarta Sans (texto).
+     Se você estiver sem internet, o site cai sozinho na fonte do
+     sistema e não quebra nada. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   ASTD Trade Values — tema
+   Mexa aqui pra mudar as cores do site inteiro.
+   (Os comentários do código ficam em português pra você entender;
+    só o texto que aparece na tela é que está em inglês.)
+   ============================================================ */
+:root{
+  /* ---- FONTES ----
+     Quer trocar? Muda só estas duas linhas (e o <link> lá em cima).
+     Outras que combinam com o site: 'Sora', 'Space Grotesk',
+     'Plus Jakarta Sans', 'Manrope', 'Urbanist'. */
+  --font-display:'Outfit', 'Segoe UI', system-ui, sans-serif;  /* títulos e números */
+  --font-body:'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif; /* resto */
+
+  /* fundos: azul-noite bem suave, sem preto duro */
+  --bg:#0a0c16;
+  --bg-soft:#0e1120;
+  --card:rgba(255,255,255,.038);
+  --card-hover:rgba(255,255,255,.062);
+  --line:rgba(255,255,255,.075);
+  --line-soft:rgba(255,255,255,.045);
+
+  --text:#eceef8;
+  --text-dim:#a4abc8;
+  --text-faint:#6f7695;
+
+  --accent:#8b6dff;
+  --accent-2:#4fd6e8;
+  --gold:#ffcb63;
+
+  /* cor de cada tier */
+  --t-all:#8b6dff;
+  --t-new:#ff7ab0;
+  --t-s:#ffbe55;
+  --t-a:#b57cf7;
+  --t-b:#5b9cf8;
+  --t-c:#48d18a;
+  --t-pure:#4fd6e8;
+  --t-odd:#ff9a52;
+  --t-un:#9aa3bd;
+
+  --r-sm:10px;
+  --r-md:16px;
+  --r-lg:22px;
+
+  /* sombras em camadas: mais suaves que uma sombra só e dura */
+  --sh-1:0 1px 2px rgba(0,0,0,.18), 0 4px 12px rgba(0,0,0,.22);
+  --sh-2:0 2px 6px rgba(0,0,0,.2), 0 12px 34px rgba(0,0,0,.34);
+
+  /* uma curva de animação só, usada em tudo, pra dar unidade */
+  --ease:cubic-bezier(.22,.68,.36,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+/* ---------------- BARRA DE ROLAGEM ESCONDIDA ----------------
+   Some com a barrinha mas a rolagem continua igual: roda do mouse,
+   toque, setas, Page Down, Ctrl+End, tudo funciona. Só o desenho dela
+   sai da tela. Vale pra página e também pra lista do inventário.
+   São três formas porque cada navegador usa a sua. */
+html{ scrollbar-width:none; -ms-overflow-style:none; }
+::-webkit-scrollbar{ width:0; height:0; display:none; }
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* brilho de fundo — fixo, bem difuso, dá profundidade sem pesar */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(58% 46% at 12% -6%, rgba(139,109,255,.20), transparent 62%),
+    radial-gradient(52% 40% at 88% -2%, rgba(79,214,232,.13), transparent 60%),
+    radial-gradient(70% 50% at 50% 108%, rgba(139,109,255,.07), transparent 65%);
+}
+
+.wrap{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:0 24px}
+.wrap-main{padding-bottom:90px}
+/* espaço que a contagem "492 items" ocupava antes de ser removida */
+#results{padding-top:22px}
+
+/* ---------------- HEADER ---------------- */
+header{padding:64px 0 32px;text-align:center}
+
+.logo{
+  font-family:var(--font-display);
+  font-size:clamp(32px,5.6vw,58px);font-weight:800;letter-spacing:-1.8px;line-height:1.02;
+  background:linear-gradient(104deg,#fff 8%,#c9b8ff 42%,var(--accent-2) 88%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.tagline{color:var(--text-dim);margin-top:12px;font-size:16px;font-weight:400;letter-spacing:.1px}
+
+.meta-row{
+  margin-top:22px;display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;
+  font-size:13px;color:var(--text-faint);
+}
+.dot{
+  width:7px;height:7px;border-radius:50%;background:#4ade80;flex:none;
+  box-shadow:0 0 0 3px rgba(74,222,128,.16);transition:.4s var(--ease);
+}
+.dot.stale{background:var(--gold);box-shadow:0 0 0 3px rgba(255,203,99,.16)}
+.dot.err{background:#f87171;box-shadow:0 0 0 3px rgba(248,113,113,.16)}
+
+.btn{
+  background:var(--card);border:1px solid var(--line);color:var(--text-dim);
+  padding:8px 15px;border-radius:99px;cursor:pointer;font-size:13px;font-family:inherit;font-weight:500;
+  transition:.28s var(--ease);display:inline-flex;align-items:center;gap:7px;
+  backdrop-filter:blur(8px);
+}
+.btn:hover{background:var(--card-hover);color:var(--text);border-color:rgba(139,109,255,.5);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.spin svg{animation:spin .9s linear infinite}
+
+/* botão de entrar com o Discord */
+.btn-discord{border-color:rgba(88,101,242,.5);color:#b9c0ff}
+.btn-discord:hover{background:rgba(88,101,242,.22);border-color:#5865f2;color:#fff}
+.btn-discord.logado{border-color:rgba(88,101,242,.6);color:#fff}
+.btn-discord img{
+  width:19px;height:19px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.2);
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------------- TOOLBAR ---------------- */
+/* Ocupa a largura inteira da tela (por isso ela fica fora do .wrap).
+   No topo é totalmente transparente e se funde com a página — o fundo
+   de vidro só aparece depois que você começa a rolar, quando ele passa
+   a ser necessário pra dar contraste com os cards passando por trás. */
+#tb-sentinel{height:1px;margin-bottom:-1px;pointer-events:none}
+
+.toolbar{
+  position:sticky;top:0;z-index:50;
+  padding:16px 0 15px;
+  background:transparent;
+  border-bottom:1px solid transparent;
+  transition:background .4s var(--ease), border-color .4s var(--ease),
+             box-shadow .4s var(--ease);
+}
+.toolbar.stuck{
+  background:linear-gradient(to bottom, rgba(10,12,22,.94), rgba(10,12,22,.82));
+  backdrop-filter:blur(20px) saturate(145%);
+  border-bottom-color:var(--line-soft);
+  box-shadow:0 12px 34px rgba(0,0,0,.3);
+}
+
+.toolbar-inner{
+  max-width:1440px;margin:0 auto;padding:0 24px;
+  display:flex;flex-direction:column;gap:14px;
+}
+.search-row{display:flex;gap:11px;flex-wrap:wrap}
+
+.search-box{position:relative;flex:1;min-width:230px}
+.search-box>svg{
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  color:var(--text-faint);pointer-events:none;transition:.28s var(--ease);
+}
+.search-box:focus-within>svg{color:var(--accent)}
+
+#search{
+  width:100%;padding:13px 42px 13px 46px;font-size:15px;font-family:inherit;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);color:var(--text);
+  transition:.28s var(--ease);
+}
+#search:hover{background:var(--card-hover)}
+#search:focus{
+  outline:none;border-color:rgba(139,109,255,.62);background:var(--card-hover);
+  box-shadow:0 0 0 4px rgba(139,109,255,.13);
+}
+#search::placeholder{color:var(--text-faint)}
+#search::-webkit-search-cancel-button{display:none}
+
+.clear-x{
+  position:absolute;right:9px;top:50%;
+  background:none;border:none;color:var(--text-faint);cursor:pointer;font-size:19px;
+  padding:5px 9px;border-radius:9px;line-height:1;transition:.24s var(--ease);
+  opacity:0;transform:translateY(-50%) scale(.85);pointer-events:none;
+}
+.clear-x.on{opacity:1;transform:translateY(-50%) scale(1);pointer-events:auto}
+.clear-x:hover{color:var(--text);background:var(--line)}
+
+#sort{
+  padding:13px 38px 13px 16px;font-size:14px;font-family:inherit;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);color:var(--text);
+  transition:.28s var(--ease);appearance:none;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236f7695' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 15px center;
+}
+#sort:hover{background-color:var(--card-hover)}
+#sort:focus{outline:none;border-color:rgba(139,109,255,.62);box-shadow:0 0 0 4px rgba(139,109,255,.13)}
+#sort option{background:#161a2c;color:var(--text)}
+
+/* ---------------- CHIPS DE TIER (escolhe UM de cada vez) ---------------- */
+/* centralizados embaixo da barra de busca */
+.chips{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+.chip{
+  padding:8px 17px;border-radius:99px;cursor:pointer;font-size:13.5px;font-weight:600;
+  font-family:var(--font-display);letter-spacing:-.1px;
+  background:var(--card);border:1px solid var(--line);color:var(--text-dim);
+  transition:.3s var(--ease);font-family:inherit;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:7px;position:relative;
+}
+.chip:hover{
+  color:var(--text);transform:translateY(-1.5px);
+  border-color:color-mix(in srgb, var(--chip-color,var(--accent)) 52%, transparent);
+  background:var(--card-hover);
+}
+.chip.on{
+  background:color-mix(in srgb, var(--chip-color,var(--accent)) 17%, transparent);
+  border-color:color-mix(in srgb, var(--chip-color,var(--accent)) 62%, transparent);
+  color:var(--chip-color,var(--accent));
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--chip-color,var(--accent)) 11%, transparent),
+             0 5px 18px color-mix(in srgb, var(--chip-color,var(--accent)) 17%, transparent);
+}
+.chip .n{
+  font-weight:700;font-size:11.5px;opacity:.72;font-variant-numeric:tabular-nums;
+  background:rgba(255,255,255,.07);padding:2px 7px;border-radius:99px;transition:.3s var(--ease);
+}
+.chip.on .n{background:color-mix(in srgb, var(--chip-color,var(--accent)) 24%, transparent);opacity:1}
+
+/* ---------------- SEÇÕES ---------------- */
+.tier-block{margin-top:34px;animation:rise .5s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.tier-head{
+  display:flex;align-items:center;gap:14px;margin-bottom:4px;padding-bottom:16px;position:relative;
+}
+/* linha do título com fade no fim, em vez de borda dura atravessando tudo */
+.tier-head::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,
+    var(--tc,var(--accent)),
+    color-mix(in srgb, var(--tc,var(--accent)) 22%, transparent) 42%,
+    transparent 88%);
+}
+.tier-badge{
+  width:46px;height:46px;flex:none;border-radius:14px;display:grid;place-items:center;
+  font-family:var(--font-display);font-weight:800;font-size:18px;color:#0a0c16;
+  background:linear-gradient(140deg,
+    color-mix(in srgb, var(--tc,var(--accent)) 88%, #fff),
+    var(--tc,var(--accent)));
+  box-shadow:0 5px 20px color-mix(in srgb, var(--tc,var(--accent)) 34%, transparent);
+}
+.tier-title{font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:-.5px}
+.tier-count{color:var(--text-faint);font-size:13.5px;margin-left:auto}
+
+.sub-head{
+  margin:26px 0 12px;font-size:12px;font-weight:700;letter-spacing:1.7px;text-transform:uppercase;
+  color:var(--tc,var(--accent));opacity:.8;display:flex;align-items:center;gap:11px;
+}
+.sub-count{
+  font-size:11px;font-weight:700;letter-spacing:0;opacity:.85;
+  background:color-mix(in srgb, var(--tc,var(--accent)) 15%, transparent);
+  padding:2px 8px;border-radius:99px;font-variant-numeric:tabular-nums;
+}
+.sub-head::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg, color-mix(in srgb, var(--tc,var(--accent)) 26%, transparent), transparent);
+}
+
+/* ---------------- CARDS ---------------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(315px,1fr));gap:15px}
+
+/* Quando o tier NÃO tem subseção (New Units, Untiered), os cards
+   vinham colados na linha do título — só 4px, contra os 26px que os
+   outros ganham por causa do subtítulo. Este respiro iguala os dois. */
+.tier-head + .grid{margin-top:26px}
+
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:17px 17px 16px;display:flex;flex-direction:column;gap:12px;
+  transition:transform .32s var(--ease), background .32s var(--ease),
+             border-color .32s var(--ease), box-shadow .32s var(--ease);
+  position:relative;overflow:hidden;
+  animation:pop .42s var(--ease) both;
+  /* SEM backdrop-filter aqui de propósito: com ele, o Chrome desenhava
+     uma emenda clara vertical na borda do card no hover — era aquela
+     "linha branca". Como o fundo atrás do card é liso, desfocá-lo não
+     mudava nada visualmente, só custava GPU e criava o defeito. */
+}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+/* escadinha só nos primeiros cards: com 492 na tela, animar todos travaria */
+.card:nth-child(1){animation-delay:.02s}  .card:nth-child(2){animation-delay:.04s}
+.card:nth-child(3){animation-delay:.06s}  .card:nth-child(4){animation-delay:.08s}
+.card:nth-child(5){animation-delay:.10s}  .card:nth-child(6){animation-delay:.12s}
+.card:nth-child(7){animation-delay:.14s}  .card:nth-child(8){animation-delay:.16s}
+
+/* Aqui existia uma faixa vertical da cor do tier na borda esquerda.
+   Removida: como ela era recuada 14px em cima e embaixo, ficava
+   "solta" no meio da borda e parecia sujeira/sombra, ainda mais nos
+   cards cortados pela beirada da tela. A cor do tier já aparece no
+   título da seção e na borda do card quando o mouse passa. */
+
+/* clarão bem discreto no topo, aparece só no hover */
+.card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:.32s var(--ease);
+  background:radial-gradient(120% 80% at 50% -20%,
+    color-mix(in srgb, var(--tc,var(--accent)) 13%, transparent), transparent 62%);
+}
+.card:hover{
+  background:var(--card-hover);transform:translateY(-3px);
+  border-color:color-mix(in srgb, var(--tc,var(--accent)) 42%, transparent);
+  box-shadow:var(--sh-2);
+}
+.card:hover::after{opacity:1}
+
+.card-top{display:flex;gap:13px;align-items:flex-start;position:relative}
+
+.avatar{
+  width:60px;height:60px;flex:none;border-radius:15px;
+  display:grid;place-items:center;position:relative;
+  font-family:var(--font-display);font-weight:800;font-size:17px;color:#fff;letter-spacing:-.5px;
+  border:1px solid rgba(255,255,255,.11);overflow:hidden;
+  box-shadow:var(--sh-1);transition:.32s var(--ease);
+}
+.card:hover .avatar{transform:scale(1.05) rotate(-1.5deg)}
+
+/* imagem clicável: leva pro wiki */
+.avatar-link{display:block;flex:none;border-radius:15px;text-decoration:none;outline:none}
+.avatar-link .avatar{cursor:pointer}
+.avatar-link:hover .avatar{
+  transform:scale(1.1) rotate(-2deg);
+  border-color:color-mix(in srgb, var(--tc,var(--accent)) 70%, transparent);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--tc,var(--accent)) 22%, transparent), var(--sh-1);
+}
+.avatar-link:focus-visible .avatar{
+  box-shadow:0 0 0 3px var(--accent-2);
+}
+
+/* iniciais e imagem ocupam a mesma célula do grid, uma por cima da outra */
+.avatar .ini{grid-area:1/1;transition:opacity .3s var(--ease)}
+.avatar img{
+  grid-area:1/1;width:100%;height:100%;display:block;
+  /* 'contain' e não 'cover': as artes do wiki têm enquadramentos
+     diferentes, e cortar acabaria decapitando alguns personagens */
+  object-fit:contain;
+  opacity:0;transition:opacity .35s var(--ease);
+}
+.avatar.ok img{opacity:1}
+.avatar.ok .ini{opacity:0}   /* imagem carregou: some com as iniciais */
+
+.names{min-width:0;flex:1;padding-top:2px}
+.n-main{
+  font-family:var(--font-display);font-weight:700;font-size:16px;
+  line-height:1.3;word-break:break-word;letter-spacing:-.25px;
+}
+.n-sub{color:var(--text-faint);font-size:12.5px;margin-top:3px;word-break:break-word;line-height:1.35}
+
+/* nome clicável: leva pro wiki, igual à imagem */
+.name-link{color:inherit;text-decoration:none;transition:color .24s var(--ease)}
+.name-link:hover{color:var(--tc,var(--accent));text-decoration:underline;text-underline-offset:3px}
+.name-link:focus-visible{outline:2px solid var(--accent-2);outline-offset:3px;border-radius:4px}
+
+.value{display:flex;align-items:baseline;gap:8px;line-height:1}
+.value .lbl{
+  font-size:10px;font-weight:700;color:var(--text-faint);
+  text-transform:uppercase;letter-spacing:1.4px;
+}
+.value .num{
+  font-family:var(--font-display);
+  font-size:24px;font-weight:800;letter-spacing:-.7px;font-variant-numeric:tabular-nums;
+  /* a cor vem inline, calculada pelo valor (vermelho→verde).
+     este dourado é só o fallback caso o cálculo não role */
+  color:var(--gold);
+}
+/* A classe `.faixa` marca valor em texto ("400,000 - ???") em vez de
+   número puro. De propósito ela NÃO mexe no tamanho: fica igual aos
+   outros valores, que foi o pedido — e cabe, medi 88px de texto num
+   card de 390px. Se um dia entrar um texto bem mais longo e ele
+   estourar o card, é aqui que se diminui a fonte. */
+
+.value.none{font-size:13.5px;font-weight:500;color:var(--text-faint);font-style:italic}
+
+/* Owner's Choice: acima de qualquer preço, então ganha um degradê
+   próprio em vez do dourado dos valores normais. */
+.value.owners .num{
+  font-size:17px;letter-spacing:-.3px;
+  background:linear-gradient(96deg,#ffd479,#ff9ecb 52%,#b18cff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.value.owners{cursor:help}
+
+.stats{display:flex;gap:7px;flex-wrap:wrap}
+.stat{
+  background:rgba(255,255,255,.045);border:1px solid var(--line-soft);border-radius:var(--r-sm);
+  padding:6px 10px;font-size:11.5px;color:var(--text-dim);cursor:help;
+  display:flex;align-items:center;gap:6px;transition:.26s var(--ease);
+}
+.stat:hover{background:rgba(255,255,255,.085);color:var(--text);border-color:var(--line)}
+.stat b{color:var(--text);font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums}
+
+/* ---------------- TAG DA UNIDADE ----------------
+   A cor vem da planilha, mas clareada onde precisava: o marrom do
+   "Inflated" (#783f04) e o cinza do "Black Marketed" (#666666) somem
+   no fundo escuro do site. Mantive o tom, subi o brilho. */
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{
+  font-family:var(--font-display);font-size:11px;font-weight:700;
+  letter-spacing:.3px;text-transform:uppercase;
+  padding:4px 10px;border-radius:99px;cursor:help;
+  color:var(--tg,var(--text-dim));
+  background:color-mix(in srgb, var(--tg,var(--text-dim)) 16%, transparent);
+  border:1px solid color-mix(in srgb, var(--tg,var(--text-dim)) 34%, transparent);
+}
+.tag[data-t="Stable"]        {--tg:#ffe599}
+.tag[data-t="Unstable"]      {--tg:#8fc3cf}
+.tag[data-t="Rising"]        {--tg:#4ecb71}
+.tag[data-t="Dropping"]      {--tg:#ff5c5c}
+.tag[data-t="Inflated"]      {--tg:#d59a52}   /* marrom clareado */
+.tag[data-t="Deflated"]      {--tg:#6ba4ff}
+.tag[data-t="Varies"]        {--tg:#a48cdd}
+.tag[data-t="Maximum"]       {--tg:#ff8c33}
+.tag[data-t="Hyped"]         {--tg:#4de3e3}
+.tag[data-t="Gatekept"]      {--tg:#d99cbb}
+.tag[data-t="Black Marketed"]{--tg:#a8a8a8}   /* cinza clareado */
+
+.notice{
+  font-size:12.5px;color:var(--text-dim);line-height:1.58;
+  border-top:1px solid var(--line-soft);padding-top:12px;margin-top:auto;
+  white-space:pre-wrap;transition:.26s var(--ease);
+}
+/* A classe `clip` só fica nas notas que REALMENTE não couberam em 3
+   linhas — quem couber inteiro perde a classe e volta ao cursor normal,
+   senão o texto parecia clicável sem ter nada pra abrir. Quem decide
+   isso é a função ajustarNotas(), que mede depois de desenhar. */
+.notice.clip{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+.notice.clip:hover{color:var(--text)}
+
+mark{background:rgba(139,109,255,.34);color:#fff;border-radius:4px;padding:1px 3px;font-weight:600}
+
+/* ---------------- ESTADOS ---------------- */
+.state{text-align:center;padding:80px 20px;color:var(--text-dim);animation:rise .5s var(--ease) both}
+.state h3{color:var(--text);font-size:20px;margin-bottom:10px;font-weight:700;letter-spacing:-.3px}
+.state p{line-height:1.7}
+.state code{
+  background:var(--card);padding:3px 9px;border-radius:7px;font-size:13px;
+  color:var(--accent-2);border:1px solid var(--line);
+}
+.loader{
+  width:42px;height:42px;margin:0 auto 22px;border-radius:50%;
+  border:2.5px solid var(--line);border-top-color:var(--accent);animation:spin .85s linear infinite;
+}
+.bar{height:4px;background:var(--line);border-radius:99px;overflow:hidden;max-width:290px;margin:20px auto 0}
+.bar i{
+  display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  transition:width .45s var(--ease);
+}
+
+/* ---------------- LEGENDA ---------------- */
+details.legend{
+  margin-top:48px;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r-lg);overflow:hidden;
+  transition:.3s var(--ease);   /* sem backdrop-filter, mesmo motivo do card */
+}
+details.legend:hover{border-color:rgba(139,109,255,.28)}
+details.legend summary{
+  padding:18px 20px;cursor:pointer;font-weight:600;font-size:15px;
+  list-style:none;display:flex;align-items:center;gap:11px;transition:.26s var(--ease);
+}
+details.legend summary::-webkit-details-marker{display:none}
+details.legend summary::before{
+  content:'';width:6px;height:6px;flex:none;
+  border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);
+  transform:rotate(-45deg);transition:.3s var(--ease);margin-left:3px;
+}
+details.legend[open] summary::before{transform:rotate(45deg)}
+details.legend summary:hover{background:rgba(255,255,255,.03)}
+
+.legend-body{padding:4px 20px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:30px}
+.legend-body h4{
+  font-size:11.5px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);
+  margin-bottom:12px;font-weight:700;
+}
+.legend-body dl{font-size:13px;line-height:1.85;color:var(--text-dim)}
+.legend-body dt{
+  display:inline-block;min-width:28px;font-weight:800;color:var(--text);
+  font-variant-numeric:tabular-nums;
+}
+.legend-note{color:var(--text-faint);font-size:12.5px;line-height:1.65;margin-top:14px}
+
+footer{
+  margin-top:56px;padding-top:26px;border-top:1px solid var(--line-soft);
+  text-align:center;color:var(--text-faint);font-size:13px;line-height:1.95;
+}
+footer a{color:var(--accent-2);text-decoration:none;transition:.24s var(--ease)}
+footer a:hover{color:#7fe6f4;text-decoration:underline}
+
+/* ---------------- CALCULADORA DE TROCA ---------------- */
+.btn-calc{
+  font-family:var(--font-display);font-size:13.5px;font-weight:600;letter-spacing:-.1px;
+  border-color:rgba(79,214,232,.42);color:#9fe6f0;
+}
+.btn-calc:hover{background:rgba(79,214,232,.16);border-color:var(--accent-2);color:#fff}
+
+.calc{
+  position:fixed;inset:0;z-index:95;margin:auto;
+  width:min(880px,calc(100% - 32px));height:min(680px,calc(100% - 32px));
+  background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:0 24px 70px rgba(0,0,0,.55);
+  display:flex;flex-direction:column;overflow:hidden;
+  opacity:0;transform:scale(.97);pointer-events:none;
+  transition:opacity .28s var(--ease), transform .28s var(--ease);
+}
+.calc.on{opacity:1;transform:none;pointer-events:auto}
+.calc .drawer-head h2{flex:1}
+
+/* faixa do veredito */
+.calc-resumo{
+  padding:16px 20px;border-bottom:1px solid var(--line-soft);
+  display:flex;gap:26px;flex-wrap:wrap;align-items:center;min-height:78px;
+}
+.calc-vazio{color:var(--text-faint);font-size:13.5px;line-height:1.6}
+.veredito{
+  font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:-.6px;
+  padding:2px 14px;border-radius:10px;
+}
+.veredito.win  {color:#4ecb71;background:rgba(78,203,113,.14)}
+.veredito.lose {color:#ff5c5c;background:rgba(255,92,92,.14)}
+.veredito.fair {color:var(--gold);background:rgba(255,203,99,.14)}
+.veredito.incerto{color:var(--text-dim);background:rgba(255,255,255,.07);font-size:22px}
+.calc-num{display:flex;flex-direction:column;gap:2px}
+.calc-num .r{
+  font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--text-faint);
+}
+.calc-num .v{
+  font-family:var(--font-display);font-size:19px;font-weight:800;
+  font-variant-numeric:tabular-nums;
+}
+.calc-aviso{
+  flex-basis:100%;font-size:11.5px;color:var(--text-faint);line-height:1.5;
+}
+
+.calc-lados{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:0}
+.calc-lado{
+  display:flex;flex-direction:column;min-height:0;padding:14px;
+  border-right:1px solid var(--line-soft);
+}
+.calc-lado:last-child{border-right:none}
+.calc-lado h3{
+  font-family:var(--font-display);font-size:12px;font-weight:700;
+  letter-spacing:1.4px;text-transform:uppercase;color:var(--text-faint);margin-bottom:10px;
+}
+
+.calc-busca{position:relative;margin-bottom:10px}
+.calc-busca input{
+  width:100%;padding:9px 12px;font-size:13.5px;font-family:inherit;
+  background:var(--card);border:1px solid var(--line);border-radius:10px;color:var(--text);
+  transition:.24s var(--ease);
+}
+.calc-busca input:focus{outline:none;border-color:rgba(79,214,232,.6);background:var(--card-hover)}
+.calc-busca input::-webkit-search-cancel-button{display:none}
+
+.calc-sug{
+  position:absolute;top:calc(100% + 5px);left:0;right:0;z-index:5;
+  background:#171a2c;border:1px solid var(--line);border-radius:12px;
+  box-shadow:var(--sh-2);overflow:hidden;display:none;
+}
+.calc-sug.on{display:block}
+.calc-sug button{
+  display:flex;width:100%;align-items:center;gap:9px;
+  padding:8px 11px;background:none;border:none;cursor:pointer;text-align:left;
+  color:var(--text);font-family:inherit;font-size:13px;
+}
+.calc-sug button:hover{background:rgba(255,255,255,.06)}
+.calc-sug .nm{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.calc-sug .vl{color:var(--text-faint);font-size:11.5px;font-variant-numeric:tabular-nums}
+
+.calc-lista{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.calc-lista:empty::after{
+  content:'Nothing here yet';
+  color:var(--text-faint);font-size:12.5px;padding:18px 4px;
+}
+.calc-item{
+  display:flex;align-items:center;gap:9px;padding:7px 6px;border-radius:9px;
+}
+.calc-item:hover{background:rgba(255,255,255,.035)}
+.calc-item .foto{
+  width:32px;height:32px;flex:none;border-radius:8px;overflow:hidden;
+  display:grid;place-items:center;border:1px solid var(--line-soft);
+  font-size:10px;font-weight:800;color:#fff;
+}
+.calc-item .foto img{width:100%;height:100%;object-fit:contain}
+.calc-item .txt{flex:1;min-width:0}
+.calc-item .nm{
+  font-family:var(--font-display);font-size:12.5px;font-weight:700;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.calc-item .vl{font-size:11px;color:var(--text-faint);font-variant-numeric:tabular-nums}
+.calc-item .x{
+  background:none;border:none;color:var(--text-faint);cursor:pointer;
+  font-size:17px;padding:0 5px;border-radius:6px;line-height:1;
+}
+.calc-item .x:hover{color:#ff5c5c;background:rgba(255,92,92,.12)}
+
+.calc-total{
+  border-top:1px solid var(--line-soft);margin-top:10px;padding-top:10px;
+  font-size:12.5px;color:var(--text-dim);display:flex;justify-content:space-between;gap:8px;
+}
+.calc-total b{color:var(--text);font-variant-numeric:tabular-nums}
+
+@media(max-width:720px){
+  .calc{width:calc(100% - 16px);height:calc(100% - 16px)}
+  .calc-lados{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+  .calc-lado{border-right:none;border-bottom:1px solid var(--line-soft)}
+}
+
+/* ---------------- INVENTÁRIO ---------------- */
+
+/* Botão do inventário, agora na linha dos chips. Ele é uma AÇÃO, não um
+   filtro, então leva a cor de destaque e um tracinho separando — senão
+   parece só mais uma categoria pra clicar. */
+.btn-inv{
+  font-family:var(--font-display);font-size:13.5px;font-weight:600;letter-spacing:-.1px;
+  position:relative;margin-left:9px;
+  border-color:color-mix(in srgb, var(--accent) 42%, transparent);
+  color:#c9b8ff;
+}
+.btn-inv::before{
+  content:'';position:absolute;left:-10px;top:50%;transform:translateY(-50%);
+  width:1px;height:19px;background:var(--line);
+}
+.btn-inv:hover{
+  background:color-mix(in srgb, var(--accent) 17%, transparent);
+  border-color:var(--accent);color:#fff;
+}
+.btn-inv.tem{
+  border-color:var(--accent);color:#fff;
+  background:color-mix(in srgb, var(--accent) 14%, transparent);
+}
+@media(max-width:640px){
+  .btn-inv{margin-left:0}
+  .btn-inv::before{display:none}   /* quebrou linha: o tracinho ficaria solto */
+}
+
+/* contador no botão */
+.inv-badge{
+  font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums;
+  background:color-mix(in srgb, var(--accent) 26%, transparent);
+  color:#d9cdff;padding:2px 8px;border-radius:99px;transition:.3s var(--ease);
+}
+#btn-inv.tem .inv-badge{background:var(--accent);color:#fff}
+
+/* botão "+" que aparece no canto do card */
+.add-btn{
+  position:absolute;top:11px;right:11px;z-index:2;
+  min-width:30px;height:30px;padding:0 8px;border-radius:99px;
+  background:rgba(12,14,26,.72);border:1px solid var(--line);
+  color:var(--text-dim);font-family:var(--font-display);font-weight:700;font-size:14px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;
+  opacity:0;transform:scale(.85);transition:.24s var(--ease);backdrop-filter:blur(4px);
+}
+.card:hover .add-btn, .add-btn:focus-visible{opacity:1;transform:none}
+.add-btn:hover{
+  background:var(--accent);border-color:var(--accent);color:#fff;transform:scale(1.08);
+}
+/* quando já está no inventário, fica sempre visível mostrando a quantidade */
+.add-btn.tem{
+  opacity:1;transform:none;
+  background:color-mix(in srgb, var(--accent) 88%, #000);
+  border-color:var(--accent);color:#fff;
+}
+.card.no-inv{border-color:color-mix(in srgb, var(--accent) 40%, transparent)}
+
+/* fundo escuro atrás do painel */
+.drawer-bg{
+  position:fixed;inset:0;z-index:90;background:rgba(6,7,14,.62);
+  opacity:0;pointer-events:none;transition:opacity .32s var(--ease);
+  backdrop-filter:blur(2px);
+}
+.drawer-bg.on{opacity:1;pointer-events:auto}
+
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:95;width:min(420px,100%);
+  background:var(--bg-soft);border-left:1px solid var(--line);
+  box-shadow:-18px 0 50px rgba(0,0,0,.45);
+  display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .36s var(--ease);
+}
+.drawer.on{transform:none}
+
+.drawer-head{
+  display:flex;align-items:center;gap:12px;
+  padding:20px 20px 16px;border-bottom:1px solid var(--line-soft);
+}
+.drawer-head h2{font-family:var(--font-display);font-size:20px;font-weight:700;flex:1}
+.drawer-x{
+  background:none;border:none;color:var(--text-faint);font-size:26px;line-height:1;
+  cursor:pointer;padding:2px 10px;border-radius:10px;transition:.24s var(--ease);
+}
+.drawer-x:hover{color:var(--text);background:var(--line)}
+
+.inv-total{padding:20px;border-bottom:1px solid var(--line-soft)}
+.inv-total .lbl{
+  display:block;font-size:10px;font-weight:700;letter-spacing:1.4px;
+  text-transform:uppercase;color:var(--text-faint);margin-bottom:4px;
+}
+.inv-total .num{
+  font-family:var(--font-display);font-size:34px;font-weight:800;letter-spacing:-1px;
+  font-variant-numeric:tabular-nums;color:var(--gold);
+}
+.inv-notes{margin-top:8px;font-size:12px;color:var(--text-faint);line-height:1.6}
+.inv-notes b{color:var(--text-dim);font-weight:600}
+
+.inv-list{flex:1;overflow-y:auto;padding:8px 12px}
+.inv-vazio{padding:48px 24px;text-align:center;color:var(--text-faint);font-size:13.5px;line-height:1.7}
+
+.inv-item{
+  display:flex;align-items:center;gap:11px;padding:9px 8px;border-radius:12px;
+  transition:background .2s var(--ease);
+}
+.inv-item:hover{background:rgba(255,255,255,.035)}
+.inv-item .foto{
+  width:40px;height:40px;flex:none;border-radius:10px;overflow:hidden;
+  display:grid;place-items:center;border:1px solid var(--line-soft);
+  font-size:12px;font-weight:800;font-family:var(--font-display);color:#fff;
+}
+.inv-item .foto img{width:100%;height:100%;object-fit:contain}
+.inv-item .txt{flex:1;min-width:0}
+.inv-item .nm{
+  font-family:var(--font-display);font-size:13.5px;font-weight:700;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.inv-item .vl{font-size:12px;color:var(--text-faint);font-variant-numeric:tabular-nums}
+/* selo do tier: é o que diferencia a Death normal da Death Pure */
+.inv-tier{
+  display:inline-block;min-width:17px;padding:1px 5px;margin-right:6px;border-radius:5px;
+  font-size:9.5px;font-weight:800;text-align:center;vertical-align:1px;
+  background:color-mix(in srgb, var(--tc,var(--accent)) 26%, transparent);
+  color:var(--tc,var(--accent));
+}
+
+.qtd{display:flex;align-items:center;gap:2px;flex:none}
+.qtd button{
+  width:26px;height:26px;border-radius:8px;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);color:var(--text-dim);
+  font-size:15px;line-height:1;transition:.2s var(--ease);
+}
+.qtd button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.qtd .n{
+  min-width:26px;text-align:center;font-weight:700;font-size:13.5px;
+  font-variant-numeric:tabular-nums;
+}
+
+.drawer-foot{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 20px;border-top:1px solid var(--line-soft);font-size:12.5px;color:var(--text-faint);
+}
+.drawer-foot span{flex:1}
+.inv-clear{
+  background:none;border:1px solid var(--line);color:var(--text-dim);
+  padding:7px 13px;border-radius:99px;cursor:pointer;font-size:12.5px;font-family:inherit;
+  transition:.24s var(--ease);
+}
+.inv-clear:hover{border-color:#f87171;color:#f87171}
+
+@media(max-width:640px){
+  .drawer{width:100%}
+  .add-btn{opacity:1;transform:none}   /* no celular não existe hover */
+}
+
+/* botão de voltar ao topo */
+.to-top{
+  position:fixed;right:26px;bottom:26px;z-index:60;
+  width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(20,23,40,.86);border:1px solid var(--line);color:var(--text-dim);
+  cursor:pointer;backdrop-filter:blur(12px);box-shadow:var(--sh-1);
+  opacity:0;transform:translateY(14px) scale(.9);pointer-events:none;
+  transition:.34s var(--ease);
+}
+.to-top.on{opacity:1;transform:none;pointer-events:auto}
+.to-top:hover{color:var(--text);border-color:rgba(139,109,255,.5);transform:translateY(-2px)}
+
+/* respeita quem desligou animações no sistema */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
+
+@media(max-width:640px){
+  .wrap{padding:0 15px}
+  .wrap-main{padding-bottom:70px}
+  header{padding:40px 0 22px}
+  .toolbar{padding:13px 0}
+  .toolbar-inner{padding:0 15px}
+  .grid{grid-template-columns:1fr}
+  .tier-title{font-size:21px}
+  .to-top{right:15px;bottom:15px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1 class="logo">ASTD Trade Values</h1>
+    <p class="tagline">Trading tier list for All Star Tower Defense Site - Made by YuZ0</p>
+    <div class="meta-row">
+      <span class="dot" id="status-dot"></span>
+      <span id="status-text">loading…</span>
+      <button class="btn" id="refresh" title="Fetch fresh data from the spreadsheet">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/>
+        </svg>
+        Refresh
+      </button>
+      <!-- Só aparece se o login estiver configurado (veja CONTA no código) -->
+      <button class="btn btn-discord" id="btn-conta" hidden>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.5c1.6.4 2.9 1 4.2 1.8a15.6 15.6 0 0 0-11.3-.6c-.6.2-1 .4-1.4.6A17 17 0 0 1 8.8 3.5L8.6 3a19.8 19.8 0 0 0-4.9 1.4C1.2 8.1.4 11.7.8 15.3a19.9 19.9 0 0 0 6 3l1.2-2c-.7-.2-1.3-.5-1.9-.9l.4-.3a14.2 14.2 0 0 0 11 0l.4.3c-.6.4-1.2.7-1.9 1l1.2 1.9a19.9 19.9 0 0 0 6-3c.5-4.2-.7-7.8-3-10.9zM8.7 13.2c-1.1 0-2-1-2-2.3s.9-2.3 2-2.3 2.1 1 2 2.3c0 1.3-.9 2.3-2 2.3zm6.6 0c-1.1 0-2-1-2-2.3s.9-2.3 2-2.3 2.1 1 2 2.3c0 1.3-.9 2.3-2 2.3z"/>
+        </svg>
+        <span id="conta-txt">Sign in with Discord</span>
+      </button>
+    </div>
+  </header>
+
+</div><!-- fecha .wrap de propósito: a barra precisa ficar fora dele
+          pra ocupar a largura inteira da tela, senão vira aquele
+          retângulo com bordas aparecendo no meio da página. -->
+
+  <!-- marcador invisível: quando ELE sai da tela, a barra colou no topo -->
+  <div id="tb-sentinel" aria-hidden="true"></div>
+
+  <div class="toolbar" id="toolbar">
+    <div class="toolbar-inner">
+      <div class="search-row">
+        <div class="search-box">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+          </svg>
+          <input id="search" type="search" placeholder="Search a unit, character or note…" autocomplete="off" spellcheck="false">
+          <button class="clear-x" id="clear-search" title="Clear">&times;</button>
+        </div>
+        <select id="sort">
+          <option value="value-desc">Value: high → low</option>
+          <option value="value-asc">Value: low → high</option>
+          <option value="rarity-desc">Rarity: high → low</option>
+          <option value="demand-desc">Demand: high → low</option>
+          <option value="supply-desc">Supply: high → low</option>
+          <option value="name-asc">Name: A → Z</option>
+        </select>
+      </div>
+      <!-- O botão do inventário fica solto aqui, mas o buildChips() move
+           ele pra dentro do #chips logo depois de montar os filtros.
+           Assim ele entra na MESMA linha dos chips e quebra junto com
+           eles quando a tela é estreita, em vez de virar uma linha só. -->
+      <div class="chips" id="chips"></div>
+      <button class="btn btn-calc" id="btn-calc" title="Compare a trade">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 8h13l-3-3M21 16H8l3 3"/>
+        </svg>
+        Trade Calc
+      </button>
+      <button class="btn btn-inv" id="btn-inv" title="Units you own">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round">
+          <path d="M3 7h18v13H3z"/><path d="M3 7l2-3h14l2 3"/><path d="M12 7v13"/>
+        </svg>
+        My Inventory
+        <span class="inv-badge" id="inv-badge">0</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="wrap wrap-main">
+  <main id="results">
+    <div class="state">
+      <div class="loader"></div>
+      <h3>Reading the spreadsheet…</h3>
+      <p id="load-msg">connecting to Google Sheets</p>
+      <div class="bar"><i id="load-bar"></i></div>
+    </div>
+  </main>
+
+  <details class="legend">
+    <summary>What the numbers mean (rarity, supply, demand)</summary>
+    <div class="legend-body" id="legend"></div>
+  </details>
+
+  <footer>
+    Data is pulled live from the <a href="https://docs.google.com/spreadsheets/d/1Z20NUscF9Id2Sss-osT-Xq06gz9ooikt6Kjtianeg0I/edit" target="_blank" rel="noopener">official ASTD value spreadsheet</a>.<br>
+    All credit for the values goes to the team that maintains it. This site is just a nicer way to read it.
+  </footer>
+
+</div>
+
+<!-- ══════════ CALCULADORA DE TROCA ══════════ -->
+<div class="drawer-bg" id="calc-bg"></div>
+
+<aside class="calc" id="calc" aria-hidden="true" aria-label="Trade calculator">
+  <div class="drawer-head">
+    <h2>Trade Calculator</h2>
+    <button class="inv-clear" id="calc-limpar">Clear</button>
+    <button class="drawer-x" id="calc-x" aria-label="Close">&times;</button>
+  </div>
+
+  <div class="calc-resumo" id="calc-resumo"></div>
+
+  <div class="calc-lados">
+    <section class="calc-lado" data-lado="a">
+      <h3>You give</h3>
+      <div class="calc-busca">
+        <input type="search" placeholder="Add a unit…" data-busca="a" autocomplete="off">
+        <div class="calc-sug" data-sug="a"></div>
+      </div>
+      <div class="calc-lista" data-lista="a"></div>
+      <div class="calc-total" data-total="a"></div>
+    </section>
+
+    <section class="calc-lado" data-lado="b">
+      <h3>You get</h3>
+      <div class="calc-busca">
+        <input type="search" placeholder="Add a unit…" data-busca="b" autocomplete="off">
+        <div class="calc-sug" data-sug="b"></div>
+      </div>
+      <div class="calc-lista" data-lista="b"></div>
+      <div class="calc-total" data-total="b"></div>
+    </section>
+  </div>
+</aside>
+
+<!-- ══════════ INVENTÁRIO ══════════
+     Painel que desliza da direita. Fica fora do .wrap pra poder cobrir
+     a tela inteira sem herdar a largura máxima do conteúdo. -->
+<div class="drawer-bg" id="drawer-bg"></div>
+
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="My Inventory">
+  <div class="drawer-head">
+    <h2>My Inventory</h2>
+    <button class="drawer-x" id="drawer-x" aria-label="Close">&times;</button>
+  </div>
+
+  <div class="inv-total">
+    <span class="lbl">total value</span>
+    <span class="num" id="inv-total">0</span>
+    <div class="inv-notes" id="inv-notes"></div>
+  </div>
+
+  <div class="inv-list" id="inv-list"></div>
+
+  <div class="drawer-foot">
+    <span id="inv-count">no units yet</span>
+    <button class="inv-clear" id="inv-clear">Clear all</button>
+  </div>
+</aside>
+
+<button class="to-top" id="to-top" title="Back to top" aria-label="Back to top">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>
+  </svg>
+</button>
+
+<!-- Biblioteca do login/banco. Se não carregar (sem internet, ou você
+     ainda não configurou), o site funciona igual — só sem login, com o
+     inventário salvo apenas neste navegador. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+
+<!-- ══════════ TAGS E VALORES EM TEXTO — INÍCIO ══════════
+     A cor da célula na planilha vira a tag (laranja = Maximum, etc), e
+     aqui também ficam os valores que a API do Google descarta por serem
+     texto ("Owner's Choice", "3,000-?").
+     NÃO edite na mão: rode `python atualizar_tags.py`. -->
+<script>
+window.ASTD_TAGS = { /* 331 entries, 14 KB of generated data stripped for readability. Unit tags read from spreadsheet cell colours; generated by update_tags.py. */ };
+window.ASTD_VALOR_TEXTO = { /* 16 entries, 1 KB of generated data stripped for readability. Prices the Sheets API drops because they are text; generated by update_tags.py. */ };</script>
+<!-- ══════════ TAGS E VALORES EM TEXTO — FIM ══════════ -->
+
+<!-- ══════════ MINHAS IMAGENS — INÍCIO ══════════
+     Imagens que VOCÊ escolheu. Ganham das do wiki.
+     Pra trocar ou adicionar: joga o arquivo na pasta `imagens/`
+     com o nome da unidade e roda `python imagens_proprias.py`. -->
+<script>window.ASTD_IMAGES_CUSTOM = { /* 121 entries, 955 KB of generated data stripped for readability. Base64 unit artwork curated by the maintainer; generated by own_images.py. */ };</script>
+<!-- ══════════ MINHAS IMAGENS — FIM ══════════ -->
+
+<!-- ══════════ IMAGENS DAS UNIDADES — INÍCIO ══════════
+     Gerado a partir do wiki oficial (allstartd.fandom.com).
+     NÃO edite este bloco na mão: rode `python atualizar_imagens.py`
+     que ele busca as novidades do wiki e reescreve tudo aqui dentro.
+     Está embutido (em vez de arquivo separado) pra você poder mover
+     ou mandar o index.html pra alguém sem quebrar as imagens. -->
+<script>window.ASTD_IMAGES = { /* 420 entries, 27 KB of generated data stripped for readability. Wiki artwork paths; generated by update_images.py. */ };
+window.ASTD_WIKI = { /* 393 entries, 18 KB of generated data stripped for readability. Wiki page titles per unit; generated by update_images.py. */ };</script>
+<!-- ══════════ IMAGENS DAS UNIDADES — FIM ══════════ -->
+
+<script>
+/* ================================================================
+   CONFIGURAÇÃO — é só aqui que você mexe pra apontar pra outra
+   planilha ou adicionar/remover abas.
+   ================================================================ */
+const SHEET_ID = '1Z20NUscF9Id2Sss-osT-Xq06gz9ooikt6Kjtianeg0I';
+
+/* As URLs do wiki são todas iguais menos um pedaço do meio, então o
+   images.js guarda só esse pedaço e a gente remonta aqui. Economiza
+   uns 70% do tamanho do arquivo. */
+const WIKI_PREFIX = 'https://static.wikia.nocookie.net/allstartd/images/';
+const WIKI_SUFFIX = '/revision/latest/scale-to-width-down/160';
+
+/* ================================================================
+   IMAGEM EMPRESTADA
+   Unidades que são a mesma arte com nomes diferentes — os Hog Eyezen,
+   por exemplo, mudam só a "personalidade" mas o boneco é idêntico.
+   À esquerda quem pega emprestado, à direita de quem.
+
+   Assim uma imagem só serve várias unidades, em vez de repetir o
+   mesmo arquivo (e o mesmo peso) seis vezes dentro do HTML.
+   ================================================================ */
+const MESMA_IMAGEM = {};
+
+// Os Hog Eyezen mudam só a "personalidade" — o boneco é o mesmo.
+[ 'Hog Eyezen (Anger) / Hogyoku Aizen (Anger)',
+  'Hog Eyezen (Brave) / Hogyoku Aizen (Brave)',
+  'Hog Eyezen (Intelligence) / Hogyoku Aizen (Intelligence)',
+  'Hog Eyezen (Charm) / Hogyoku Aizen (Charm)',
+  'Other Hog Eyezens / Hogyoku Aizens',
+].forEach(n => MESMA_IMAGEM[n] = 'Hog Eyezen (NORMAL) / Hogyoku Aizen');
+
+// As skins do Bird Magician usam a arte do original.
+[ 'Heaven Bird Magician / Heaven Avdol',
+  'Shadow Bird Magician / Shadow Avdol',
+  'Yellow Bird Magician / Yellow Avdol',
+  'Green Bird Magician / Green Avdol',
+  'Blue Bird Magician / Blue Avdol',
+].forEach(n => MESMA_IMAGEM[n] = 'Bird Magician / Avdol');
+
+// Casos avulsos de "é a mesma arte com outro nome"
+MESMA_IMAGEM['Todoroki Both / Todoroki (World Heroes Mission)'] = 'Rodoroki Winter / Todoroki Winter';
+MESMA_IMAGEM['Fireworks Summer skins'] = 'Super Firework';
+MESMA_IMAGEM['Lucky Fireman / Lucky Endeavor'] = 'Blue Fireman / Blue Endeavor';
+
+const emprestaDe = name => MESMA_IMAGEM[name] || null;
+
+/* ================================================================
+   LINKS ESCRITOS NA MÃO
+   O casamento automático com o wiki é conservador de propósito: se não
+   tem certeza, não cria link, porque mandar pra página da unidade
+   errada é pior do que não ter link. O que ele deixou de fora entra
+   aqui.
+
+   À esquerda o nome EXATO da planilha, à direita o título da página no
+   wiki (só o final da URL, com espaços normais — não precisa underline
+   nem link completo).
+
+   Ex.:  'Carrot': 'Carrot (Unit)',
+   ================================================================ */
+const LINK_MANUAL = {
+  // Os Gold do S Tier apontam pra página da unidade original. Isso vale
+  // só pra eles — as skins Gold (Gold Mountain Cannon) seguem sem link.
+  'Gold Dark Wing / Gold Ulquiorra':          'Dark Wing',
+  'Gold Flame Servant / Gold Senji Muramasa': 'Flame Servant',
+  'Gold Jinjou / Gold Cumber':                'Jinjou',
+  'Gold Tomi / Gold Tobi':                    'Tomi',
+  'Gold Martial Artist / Gold Jin Mori':      'Martial Artist',
+
+  'Slim Shady [Killer Bee] / Ye [Raikage] (Forever)': 'Slim Shady/Ye (Forever)',
+  'Hog Eyezen (NORMAL) / Hogyoku Aizen':      'Hog Eyzen',   // o wiki escreve "Eyzen"
+  'Teen Koku / Teen Goku':                    'Koku (Teen)',
+  'Dungeon Queen (Shadow) / Asuna (Shadow)':  'Dungeon Queen (Shadow Spirit)',
+  'The Hero / All Might':                     'All Powerful',
+  'Kid Koku / Kid Goku':                      'Koku (Kid)',
+  'Shisui (Alter) / Sui (Alter)':             'Sui (Full Samurai)',
+  'Carrot':                                   'Bunny',
+  'Rhikidai / Shikadai':                      'Rhikadai',
+  'Green Huntress (Alter) / Atalanta (Alter)':'Green Huntress (Alternative)',
+
+  // Célula da planilha junta duas unidades numa linha só; é o shiny do
+  // Toji, que no wiki se chama "Worm Assassin".
+  'Wormji / Toji (Variant) Wormji (Rev) / Toji (Revived Variant)': 'Worm Assassin',
+
+  // No Pure, os "Other ..." mandam pra unidade normal
+  'Other Hog Eyezens / Hogyoku Aizens': 'Hog Eyzen',
+  'Other Dungeon Queens / Asunas':      'Dungeon Queen',
+
+  // O wiki não separa Egg de Egg II — os dois usam a mesma página
+  '100% Egg II - Necro':      '100% Egg - Necro',
+  '60% Egg II - Pyro':        '60% Egg - Pyro',
+  '50% Egg II - Dream':       '50% Egg - Dream',
+  '40% Egg II - Electric':    '40% Egg - Electric',
+  '30% Egg II - Gold':        '30% Egg - Gold',
+  '10% Egg II - Bronze':      '10% Egg - Bronze',
+};
+
+/* Link pra página da unidade no wiki. O ASTD_WIKI guarda o título da
+   página; a URL do Fandom é o título com espaço virando underline. */
+function wikiLink(name){
+  const pagina = LINK_MANUAL[name]
+              || (window.ASTD_WIKI || {})[name]
+              || LINK_MANUAL[emprestaDe(name)]
+              || (window.ASTD_WIKI || {})[emprestaDe(name)];
+  if(!pagina) return '';
+  // A barra tem que sobrar inteira na URL: o título "Slim Shady/Ye
+  // (Forever)" vira .../wiki/Slim_Shady/Ye_(Forever). Se eu passasse o
+  // título todo pelo encode, a barra viraria %2F e a página não abria.
+  const caminho = pagina.replace(/ /g, '_').split('/').map(encodeURIComponent).join('/');
+  return 'https://allstartd.fandom.com/wiki/' + caminho;
+}
+
+function wikiImage(name){
+  const m = window.ASTD_IMAGES || {};
+  const path = m[name] || m[emprestaDe(name)];
+  return path ? WIKI_PREFIX + path + WIKI_SUFFIX : '';
+}
+
+/* Suas imagens vêm embutidas como data: URI, então já são a própria
+   URL — é só devolver. Elas têm prioridade sobre as do wiki. */
+function customImage(name){
+  const m = window.ASTD_IMAGES_CUSTOM || {};
+  return m[name] || m[emprestaDe(name)] || '';
+}
+
+const TABS = [
+  { key:'new',  gid:'598345464',  label:'New',       full:'New Units',   badge:'NEW', color:'var(--t-new)'  },
+  { key:'s',    gid:'1154918591', label:'S Tier',    full:'S Tier',      badge:'S',   color:'var(--t-s)'    },
+  { key:'a',    gid:'2023119820', label:'A Tier',    full:'A Tier',      badge:'A',   color:'var(--t-a)'    },
+  { key:'b',    gid:'1418037381', label:'B Tier',    full:'B Tier',      badge:'B',   color:'var(--t-b)'    },
+  { key:'c',    gid:'2096364692', label:'C Tier',    full:'C Tier',      badge:'C',   color:'var(--t-c)'    },
+  { key:'pure', gid:'253483720',  label:'Pure',      full:'Pure Tier',   badge:'P',   color:'var(--t-pure)' },
+  { key:'odd',  gid:'459291543',  label:'Oddities',  full:'Oddities',    badge:'?',   color:'var(--t-odd)'  },
+  { key:'un',   gid:'1974142836', label:'No value',  full:'Untiered',    badge:'—',   color:'var(--t-un)'   },
+];
+
+/* Apelidos: vazio de propósito — todo mundo aparece com o nome da
+   planilha. Se algum dia quiser encurtar algum, é só pôr aqui o nome
+   exato da planilha à esquerda e como quer ver à direita. Por dentro
+   o site segue usando o original, então a imagem não se perde. */
+const RENOMEAR = {};
+
+/* ================================================================
+   OWNER'S CHOICE
+   Estas não têm preço na planilha, mas não é por não valerem nada —
+   é o contrário: são as mais caras do jogo, e o dono decide o que
+   aceita. Sem isso elas apareceriam como "no set value", junto com
+   os bundles de gems, e afundariam no fim de qualquer ordenação.
+   Aqui elas ganham selo próprio e contam como as mais valiosas.
+   ================================================================ */
+/* ================================================================
+   VALOR QUE NÃO É NÚMERO
+
+   A coluna de valor da planilha é do tipo "número", então a API do
+   Google devolve VAZIO em células como "Owner's Choice", "400,000 - ???"
+   ou "3,000-?". A unidade aparecia como "sem valor", o que é falso.
+
+   O `atualizar_tags.py` lê esses textos direto da planilha e deixa em
+   ASTD_VALOR_TEXTO. Antes eu tinha os dois principais escritos na mão
+   aqui no código — agora vêm da planilha, junto com outros 14 que eu
+   nem sabia que existiam.
+   ================================================================ */
+function textoDoValor(chave){
+  return (window.ASTD_VALOR_TEXTO || {})[chave] || null;
+}
+
+/** Tira um número de textos como "3,000-?" ou "400,000 - ???", pra
+ *  ordenar e escolher a cor.
+ *
+ *  Só aceita se o texto COMEÇAR com dígito, que é como preço se escreve.
+ *  Sem isso, "LUCK x10" viraria valor 10 e o item apareceria como um dos
+ *  mais baratos do site — e "epic infinity (50)" valeria 50. */
+function numeroDoTexto(txt){
+  const limpo = String(txt).trim().replace(/,/g, '');
+  const m = limpo.match(/^(\d+)/);
+  return m ? Number(m[1]) : null;
+}
+
+const ehEscolhaDoDono = txt => /owner'?s\s*choice/i.test(txt || '');
+
+const CACHE_KEY = 'astd-values-v2';   // v2: mudou o formato por causa dos apelidos
+const CACHE_MAX_AGE = 1000 * 60 * 60 * 6; // 6h: depois disso marcamos como "desatualizado"
+
+/* ================================================================
+   1) BUSCAR OS DADOS
+   Um arquivo HTML aberto direto do PC (file://) não consegue fazer
+   fetch() em outro site — o navegador bloqueia por segurança (CORS).
+   A saída é o JSONP: em vez de pedir os dados, a gente injeta uma
+   <script> apontando pra API do Google, e ela chama uma função nossa
+   com os dados dentro. Tag <script> não sofre bloqueio de CORS.
+   ================================================================ */
+let cbCounter = 0;
+
+function fetchTab(gid){
+  return new Promise((resolve, reject) => {
+    const cb = '__astd_cb_' + (cbCounter++);
+    const script = document.createElement('script');
+
+    const timer = setTimeout(() => { cleanup(); reject(new Error('timed out')); }, 25000);
+    function cleanup(){
+      clearTimeout(timer);
+      try { delete window[cb]; } catch(e){ window[cb] = undefined; }
+      script.remove();
+    }
+
+    window[cb] = data => { cleanup(); resolve(data); };
+    script.onerror = () => { cleanup(); reject(new Error('offline or sheet is private')); };
+
+    const tqx = encodeURIComponent('out:json;responseHandler:' + cb);
+    script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq`
+               + `?gid=${gid}&headers=0&tqx=${tqx}`;
+    document.head.appendChild(script);
+  });
+}
+
+/* ================================================================
+   2) LER AS CÉLULAS
+   O Google manda cada célula como {v: valorCru, f: valorFormatado}.
+   Ex.: {v: 210000, f: "210,000"} — usamos v pra ordenar, f pra exibir.
+   Célula vazia vem como null.
+   ================================================================ */
+function txt(cell){
+  if(!cell) return '';
+  const v = (cell.f !== undefined && cell.f !== null) ? cell.f : cell.v;
+  return v === null || v === undefined ? '' : String(v).trim();
+}
+function num(cell){
+  if(!cell || cell.v === null || cell.v === undefined) return null;
+  if(typeof cell.v === 'number') return cell.v;
+  const n = parseFloat(String(cell.v).replace(/[,\s]/g,''));
+  return isNaN(n) ? null : n;
+}
+
+/* ================================================================
+   3) INTERPRETAR UMA ABA
+   As abas NÃO têm o mesmo formato. Comparando:
+     S/A/B/Pure/Odd → nome | valor | raridade | supply | demanda | notas
+     C Tier         → nome | valor | raridade |                  | notas
+     Untiered       → nome |                                     | notas
+   Em vez de fixar as colunas, achamos a linha de cabeçalho (a que
+   tem a célula "Notices") e deduzimos o resto pela posição dela.
+   Assim, se você mudar a planilha, o site se adapta sozinho.
+   ================================================================ */
+function isHeaderRow(cells){
+  return cells.some(c => txt(c).toLowerCase() === 'notices');
+}
+
+function parseTab(data, tab){
+  const rows = (data && data.table && data.table.rows) || [];
+  const items = [];
+  let cols = null;         // layout atual (muda a cada cabeçalho)
+  let section = '';        // ex.: "Top S Tier", "Boxes/Crates"
+  let sectionIdx = -1;     // ordem em que a seção aparece na planilha
+  let order = 0;
+
+  for(const row of rows){
+    const c = row.c || [];
+
+    if(isHeaderRow(c)){
+      const nIdx = c.findIndex(x => txt(x).toLowerCase() === 'notices');
+      cols = {
+        name:    1,
+        value:   nIdx > 2 ? 2 : null,
+        rarity:  nIdx > 3 ? 3 : null,
+        supply:  nIdx > 4 ? 4 : null,
+        demand:  nIdx > 5 ? 5 : null,
+        notices: nIdx,
+      };
+      const label = txt(c[1]);
+      // "Names"/"Units" são rótulos genéricos, não subseções de verdade
+      section = /^(names?|units?)$/i.test(label) ? '' : label;
+      // Guarda a POSIÇÃO da seção na planilha. É o que mantém
+      // Boxes/Crates → Gamepasses → Capsules → Eggs II → Eggs → Skins
+      // nessa ordem mesmo quando você ordena os cards por valor.
+      sectionIdx++;
+      continue;
+    }
+
+    // linhas antes do primeiro cabeçalho são título/aviso da aba
+    if(!cols) continue;
+
+    const name = txt(c[cols.name]);
+    if(!name) continue;
+
+    const valueRaw = cols.value  !== null ? num(c[cols.value])  : null;
+    const rarity   = cols.rarity !== null ? num(c[cols.rarity]) : null;
+    const supply   = cols.supply !== null ? num(c[cols.supply]) : null;
+    const demand   = cols.demand !== null ? num(c[cols.demand]) : null;
+    const notices  = txt(c[cols.notices]);
+
+    // Se a aba TEM colunas de valor/raridade mas a linha veio sem
+    // nenhuma das duas, é recado solto de quem edita a planilha
+    // (tipo "hi guys - bang"), não um item. Descarta.
+    if(cols.value !== null && valueRaw === null && rarity === null) continue;
+
+    // Se algum dia você adicionar uma coluna com link de imagem,
+    // ela é achada automaticamente aqui — não precisa mudar o código.
+    let image = '';
+    for(const cell of c){
+      const t = txt(cell);
+      if(/^https?:\/\/\S+\.(png|jpe?g|gif|webp|svg)(\?\S*)?$/i.test(t)){ image = t; break; }
+    }
+
+    // Nome que vai na tela (o apelido, se você tiver definido um)
+    const exibir = RENOMEAR[name] || name;
+
+    // Valor em texto que a API descartou ("Owner's Choice", "3,000-?")
+    const chaveInv2 = tab.key + '|' + name;
+    const txtValor  = valueRaw === null ? textoDoValor(chaveInv2) : null;
+    const donoDecide = ehEscolhaDoDono(txtValor);
+
+    // "Ultra Kovegu / SSJ3 Gogeta" → jogo: Ultra Kovegu | anime: SSJ3 Gogeta
+    const slash = exibir.indexOf(' / ');
+    const main = slash > -1 ? exibir.slice(0, slash).trim() : exibir;
+    const sub  = slash > -1 ? exibir.slice(slash + 3).trim() : '';
+
+    items.push({
+      // `name` fica com o nome ORIGINAL da planilha: é a chave que
+      // acha a imagem da unidade. Só `main`/`sub` é que mudam.
+      name, main, sub, image, notices, section, sectionIdx,
+      // Owner's Choice fica com value null: ele não entra na escala de
+      // cor nem na soma, e a ordenação já o trata como o mais caro.
+      value: donoDecide ? null : (valueRaw !== null ? valueRaw : numeroDoTexto(txtValor)),
+      valorTexto: txtValor,
+      tag: (window.ASTD_TAGS || {})[chaveInv2] || null,
+      rarity, supply, demand,
+      owners: donoDecide,
+      tier: tab.key, order: order++,
+      // busca acha pelo nome antigo E pelo apelido
+      hay: (name + ' ' + exibir + ' ' + notices + ' ' + section).toLowerCase(),
+    });
+  }
+  return items;
+}
+
+/* ================================================================
+   4) ESTADO + CARREGAMENTO
+   filters.tier guarda UM tier só (ou null = todos), porque agora
+   a seleção é exclusiva: clicar num tier troca, não acumula.
+   ================================================================ */
+let ALL = [];
+let filters = { q:'', tier:null, sort:'value-desc' };
+
+const $ = id => document.getElementById(id);
+
+// Guardados uma vez só: estes dois botões são movidos pra dentro dos
+// chips e precisam sobreviver aos innerHTML que reconstroem os filtros.
+const BTN_INV  = $('btn-inv');
+const BTN_CALC = $('btn-calc');
+
+function setStatus(text, kind){
+  $('status-text').textContent = text;
+  $('status-dot').className = 'dot' + (kind ? ' ' + kind : '');
+}
+
+function timeAgo(ts){
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if(s < 60) return 'just now';
+  if(s < 120) return '1 min ago';
+  if(s < 3600) return `${Math.floor(s/60)} min ago`;
+  if(s < 7200) return '1 hour ago';
+  if(s < 86400) return `${Math.floor(s/3600)} hours ago`;
+  const d = Math.floor(s/86400);
+  return d === 1 ? '1 day ago' : `${d} days ago`;
+}
+
+async function load(force){
+  // Cache: mostra na hora o que já foi baixado antes, depois atualiza.
+  if(!force){
+    try{
+      const raw = localStorage.getItem(CACHE_KEY);
+      if(raw){
+        const c = JSON.parse(raw);
+        if(c.items && c.items.length){
+          ALL = c.items;
+          calcularEscala();
+          buildChips(); render();
+          const old = Date.now() - c.ts > CACHE_MAX_AGE;
+          setStatus(`${ALL.length} items · saved ${timeAgo(c.ts)}`, old ? 'stale' : '');
+        }
+      }
+    }catch(e){ /* cache corrompido: ignora e baixa de novo */ }
+  }
+
+  $('refresh').classList.add('spin');
+  if(!ALL.length) setStatus('downloading…');
+
+  const collected = [];
+  let done = 0, failed = 0;
+
+  await Promise.all(TABS.map(async tab => {
+    try{
+      const data = await fetchTab(tab.gid);
+      collected.push(...parseTab(data, tab));
+    }catch(err){
+      failed++;
+      console.warn('Tab failed:', tab.full, err.message);
+    }finally{
+      done++;
+      const pct = Math.round(done / TABS.length * 100);
+      const bar = $('load-bar'), msg = $('load-msg');
+      if(bar) bar.style.width = pct + '%';
+      if(msg) msg.textContent = `${done} of ${TABS.length} tabs`;
+    }
+  }));
+
+  $('refresh').classList.remove('spin');
+
+  if(!collected.length){
+    if(ALL.length){
+      setStatus('offline — showing saved data', 'err');
+    }else{
+      setStatus('could not load', 'err');
+      $('results').innerHTML = `
+        <div class="state">
+          <h3>Couldn't read the spreadsheet</h3>
+          <p>Check that you're online and that the sheet is still shared as<br>
+             <code>Anyone with the link — Viewer</code>.</p>
+          <p style="margin-top:18px"><button class="btn" onclick="load(true)">Try again</button></p>
+        </div>`;
+    }
+    return;
+  }
+
+  // ordena os itens na mesma sequência das abas em TABS
+  const rank = Object.fromEntries(TABS.map((t,i) => [t.key, i]));
+  collected.sort((a,b) => rank[a.tier] - rank[b.tier] || a.order - b.order);
+
+  ALL = collected;
+  try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ ts:Date.now(), items:ALL })); }catch(e){}
+
+  calcularEscala();
+  buildChips();
+  render();
+  setStatus(
+    `${ALL.length} items · updated just now` + (failed ? ` · ${failed} tab(s) failed` : ''),
+    failed ? 'stale' : ''
+  );
+}
+
+/* ================================================================
+   5) FILTROS — seleção de tier é EXCLUSIVA (um por vez)
+   Clicar num tier troca a seleção. Clicar no que já está ativo
+   volta pra "All", então não tem como ficar preso num filtro.
+   ================================================================ */
+function buildChips(){
+  const counts = {};
+  ALL.forEach(i => counts[i.tier] = (counts[i.tier] || 0) + 1);
+
+  const allChip = `
+    <button class="chip ${filters.tier === null ? 'on' : ''}"
+            style="--chip-color:var(--t-all)" data-tier="">
+      All<span class="n">${ALL.length}</span>
+    </button>`;
+
+  $('chips').innerHTML = allChip + TABS
+    .filter(t => counts[t.key])
+    .map(t => `
+      <button class="chip ${filters.tier === t.key ? 'on' : ''}"
+              style="--chip-color:${t.color}" data-tier="${t.key}">
+        ${t.label}<span class="n">${counts[t.key]}</span>
+      </button>`)
+    .join('');
+
+  /* Devolve o botão do inventário pro fim da fila de chips.
+     Uso a referência guardada em BTN_INV, e não $('btn-inv'), porque
+     esta função roda duas vezes (uma com o cache, outra com os dados
+     frescos) e o innerHTML acima apaga o botão que foi movido pra cá
+     na primeira rodada — aí o getElementById não acharia mais nada. */
+  $('chips').appendChild(BTN_INV);
+  $('chips').appendChild(BTN_CALC);   // sem isso ele fica solto e estica a linha toda
+
+  $('chips').querySelectorAll('.chip').forEach(el => {
+    el.onclick = () => {
+      const k = el.dataset.tier || null;
+      // clicar no tier já ativo desmarca e volta pra "All"
+      filters.tier = (filters.tier === k) ? null : k;
+
+      $('chips').querySelectorAll('.chip').forEach(c => {
+        c.classList.toggle('on', (c.dataset.tier || null) === filters.tier);
+      });
+
+      render();
+      // sobe até a lista pra você já ver o tier escolhido
+      const y = $('results').getBoundingClientRect().top + window.scrollY - 150;
+      if(window.scrollY > y) window.scrollTo({ top:y, behavior:'smooth' });
+    };
+  });
+}
+
+function apply(){
+  let list = ALL;
+
+  if(filters.tier)
+    list = list.filter(i => i.tier === filters.tier);
+
+  if(filters.q){
+    // cada palavra digitada precisa aparecer em algum lugar do item
+    const words = filters.q.toLowerCase().split(/\s+/).filter(Boolean);
+    list = list.filter(i => words.every(w => i.hay.includes(w)));
+  }
+
+  const s = filters.sort;
+
+  // As Owner's Choice não têm número, mas valem MAIS que qualquer
+  // preço — então na hora de ordenar elas contam como infinito.
+  const valorDe = i => i.owners ? Infinity : i.value;
+
+  // itens sem o dado vão sempre pro fim, nunca pro topo
+  const by = (a, b, key, dir) => {
+    const x = key === 'value' ? valorDe(a) : a[key];
+    const y = key === 'value' ? valorDe(b) : b[key];
+    if(x === null && y === null) return 0;
+    if(x === null) return 1;
+    if(y === null) return -1;
+    if(x === y) return 0;   // Demise vs Galaxy Girl: Infinity - Infinity daria NaN
+    return dir === 'desc' ? y - x : x - y;
+  };
+
+  const rank = Object.fromEntries(TABS.map((t,i) => [t.key, i]));
+  list = list.slice().sort((a,b) => {
+    let r = 0;
+    if(s === 'value-desc')   r = by(a,b,'value','desc');
+    if(s === 'value-asc')    r = by(a,b,'value','asc');
+    if(s === 'rarity-desc')  r = by(a,b,'rarity','desc');
+    if(s === 'demand-desc')  r = by(a,b,'demand','desc');
+    if(s === 'supply-desc')  r = by(a,b,'supply','desc');
+    if(s === 'name-asc')     r = a.main.localeCompare(b.main,'en');
+    // Empate (ou ordenação desconhecida) cai na ordem da própria
+    // planilha, que continua sendo o critério de desempate.
+    return r || rank[a.tier] - rank[b.tier] || a.order - b.order;
+  });
+
+  return list;
+}
+
+/* ================================================================
+   6) DESENHAR NA TELA
+   ================================================================ */
+const esc = s => String(s).replace(/[&<>"']/g, m =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+
+function highlight(text){
+  const safe = esc(text);
+  if(!filters.q) return safe;
+  const words = filters.q.split(/\s+/).filter(Boolean)
+                  .map(w => w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+  if(!words.length) return safe;
+  return safe.replace(new RegExp('(' + words.join('|') + ')','gi'), '<mark>$1</mark>');
+}
+
+/* Ordem de preferência da imagem, da mais forte pra mais fraca:
+     1. suas imagens (pasta imagens/ + imagens_proprias.py)
+     2. coluna de imagem na planilha, se você criar uma
+     3. imagem do wiki
+     4. avatar de iniciais com cor derivada do nome
+   Se a 1ª falhar ela cai pra 2ª, e assim por diante — as iniciais
+   ficam sempre atrás de tudo, então nenhum card fica com buraco. */
+function avatar(item){
+  const ini = esc(initials(item.main));
+
+  let h = 0;
+  for(let i = 0; i < item.main.length; i++) h = (h * 31 + item.main.charCodeAt(i)) % 360;
+
+  const fontes = [customImage(item.name), item.image, wikiImage(item.name)].filter(Boolean);
+
+  // com arte em cima, o fundo fica dessaturado pra não brigar com ela
+  const bg = fontes.length
+    ? `linear-gradient(140deg, hsl(${h} 26% 26%), hsl(${(h+40)%360} 24% 17%))`
+    : `linear-gradient(140deg, hsl(${h} 55% 46%), hsl(${(h+40)%360} 58% 31%))`;
+
+  if(!fontes.length)
+    return `<div class="avatar" style="background:${bg}"><span class="ini">${ini}</span></div>`;
+
+  // as fontes seguintes viajam no data-resto; se a atual falhar, puxa a próxima
+  const resto = fontes.slice(1).join(' ');
+
+  return `<div class="avatar" style="background:${bg}">
+    <span class="ini">${ini}</span>
+    <img src="${esc(fontes[0])}" alt="" loading="lazy" decoding="async"
+         ${resto ? `data-resto="${esc(resto)}"` : ''}
+         onload="this.parentNode.classList.add('ok')"
+         onerror="proximaFonte(this)">
+  </div>`;
+}
+
+// Tenta a próxima imagem da fila. Sem mais nenhuma, some com a tag
+// <img> e as iniciais que estavam atrás reaparecem sozinhas.
+function proximaFonte(img){
+  const fila = (img.dataset.resto || '').split(' ').filter(Boolean);
+  if(!fila.length){ img.remove(); return; }
+  img.dataset.resto = fila.slice(1).join(' ');
+  img.src = fila[0];
+}
+function initials(name){
+  return name.replace(/[^\p{L}\p{N}\s]/gu,' ').trim().split(/\s+/)
+             .slice(0,2).map(w => w[0]).join('').toUpperCase() || '?';
+}
+
+const RARITY_TXT = {
+  0:'Always obtainable', 1:'Extremely common', 2:'Very common', 3:'Common',
+  4:'Pretty common', 5:'Slightly uncommon', 6:'Uncommon', 7:'Pretty uncommon',
+  8:'Very uncommon', 9:'Slightly rare', 10:'Pretty rare (~5,000 copies)',
+  11:'Decently rare', 12:'Rare', 13:'Very rare (~1,000 copies)',
+  14:'Very very rare', 15:'Extremely rare (~500 copies)', 16:'Absurdly rare',
+  17:'Super rare (~100–150 copies)', 18:'Mega rare', 19:'Ultra rare',
+  20:'Ultra mega rare (20 copies or fewer)',
+};
+const SCALE_TXT = { 1:'Very low', 2:'Low', 3:'Average', 4:'High', 5:'Very high' };
+
+/* Explicação de cada tag, copiada da aba Tutorial da planilha.
+   Aparece ao passar o mouse na tag. */
+const TAG_EXPLICA = {
+  'Stable':        'Fair and consistently decent offers. Unlikely to move unless something happens.',
+  'Unstable':      'Could rise or drop at any moment, or stabilize.',
+  'Rising':        'Being consistently overpaid.',
+  'Dropping':      'Owners are constantly taking underpays.',
+  'Inflated':      'Costs way more than it should be worth.',
+  'Deflated':      'Underpriced — way cheaper than it should be worth.',
+  'Varies':        'Can get fair, but also lowballs or highballs.',
+  'Maximum':       'Can get fair at most, but also gets lowballs.',
+  'Hyped':         'New unit or something big changed, skyrocketing value and demand.',
+  'Gatekept':      'Owners refuse to trade it — waiting for a rise or a huge overpay.',
+  'Black Marketed':'People buying units with outside-game currency heavily impact this one.',
+};
+
+// Site em inglês → números no padrão inglês (210,000 e 13.5).
+function fmt(n){ return n === null ? '' : n.toLocaleString('en-US'); }
+
+/* ================================================================
+   COR DO VALOR — vermelho (barato) → verde (caro)
+   As pontas são exatamente as cores que você pediu.
+
+   A escala é LOGARÍTMICA de propósito. Os valores vão de 0 a 210.000,
+   mas 80% deles ficam abaixo de 1.000 e a mediana é 80. Numa escala
+   linear a mediana daria 0,0004 — quase todo o site ficaria vermelho
+   e a cor não diria nada. No log, 80 cai em 0,36 e 5.300 em 0,70.
+
+   A mistura é feita em HSL girando o tom pelo lado do amarelo
+   (vermelho → laranja → amarelo → verde). Misturando em RGB direto
+   o meio da escala viraria um marrom sujo.
+   ================================================================ */
+const COR_BARATO = { h:  -4.9, s:100.0, l:38.2 };   // #c30010
+const COR_CARO   = { h: 135.8, s: 44.9, l:46.3 };   // #41AB5D
+
+let escalaMin = 0, escalaMax = 1;
+
+function calcularEscala(){
+  const vs = ALL.filter(i => i.value !== null).map(i => i.value);
+  if(!vs.length) return;
+  escalaMin = Math.log(Math.min(...vs) + 1);   // +1 pra aguentar o valor 0
+  escalaMax = Math.log(Math.max(...vs) + 1);
+}
+
+function corDoValor(v){
+  const t = escalaMax > escalaMin
+    ? Math.min(1, Math.max(0, (Math.log(v + 1) - escalaMin) / (escalaMax - escalaMin)))
+    : 1;
+  const mix = (a, b) => a + (b - a) * t;
+  return `hsl(${mix(COR_BARATO.h, COR_CARO.h).toFixed(1)} `
+       + `${mix(COR_BARATO.s, COR_CARO.s).toFixed(1)}% `
+       + `${mix(COR_BARATO.l, COR_CARO.l).toFixed(1)}%)`;
+}
+function scaleTip(n, kind){
+  const t = SCALE_TXT[Math.round(n)];
+  return t ? `${kind}: ${t} (${fmt(n)}/5)` : `${kind}: ${fmt(n)}/5`;
+}
+
+function cardHTML(item, tab){
+  const stats = [];
+  if(item.rarity !== null) stats.push(
+    `<span class="stat" title="${esc(RARITY_TXT[Math.round(item.rarity)] || 'Rarity')}">Rarity <b>${fmt(item.rarity)}</b></span>`);
+  if(item.supply !== null) stats.push(
+    `<span class="stat" title="${esc(scaleTip(item.supply,'Supply'))}">Supply <b>${fmt(item.supply)}</b></span>`);
+  if(item.demand !== null) stats.push(
+    `<span class="stat" title="${esc(scaleTip(item.demand,'Demand'))}">Demand <b>${fmt(item.demand)}</b></span>`);
+
+  // tag vinda da cor da célula na planilha
+  const tag = item.tag
+    ? `<div class="tags"><span class="tag" data-t="${esc(item.tag)}"
+         title="${esc(TAG_EXPLICA[item.tag] || item.tag)}">${esc(item.tag)}</span></div>`
+    : '';
+
+  const value =
+      item.owners      ? `<div class="value owners" title="No fixed price — the owner decides what they accept. One of the most expensive units in the game."><span class="lbl">value</span><span class="num">Owner's Choice</span></div>`
+    : item.valorTexto  ? `<div class="value"><span class="lbl">value</span><span class="num faixa" style="color:${corDoValor(item.value)}">${esc(item.valorTexto)}</span></div>`
+    : item.value !== null ? `<div class="value"><span class="lbl">value</span><span class="num" style="color:${corDoValor(item.value)}">${esc(fmt(item.value))}</span></div>`
+    :                       `<div class="value none">no set value</div>`;
+
+  /* Clicar na imagem abre a página da unidade no wiki, em outra aba.
+     Quem não tem página conhecida fica sem link (não vira botão morto).
+     rel="noopener" é segurança padrão pra link que abre em nova aba. */
+  const link = wikiLink(item.name);
+  const foto = link
+    ? `<a class="avatar-link" href="${esc(link)}" target="_blank" rel="noopener"
+          title="Open ${esc(item.main)} on the wiki">${avatar(item)}</a>`
+    : avatar(item);
+
+  // o nome também leva pro wiki, igual à imagem
+  const nome = link
+    ? `<a class="name-link" href="${esc(link)}" target="_blank" rel="noopener"
+          title="Open ${esc(item.main)} on the wiki">${highlight(item.main)}</a>`
+    : highlight(item.main);
+
+  const chave = chaveInv(item);
+  const qtd = INVENTARIO[chave] || 0;
+
+  return `
+  <article class="card${qtd ? ' no-inv' : ''}" style="--tc:${tab.color}">
+    <button class="add-btn${qtd ? ' tem' : ''}" data-chave="${esc(chave)}"
+            title="Add to my inventory">${qtd ? qtd + '×' : '+'}</button>
+    <div class="card-top">
+      ${foto}
+      <div class="names">
+        <div class="n-main">${nome}</div>
+        ${item.sub ? `<div class="n-sub">${highlight(item.sub)}</div>` : ''}
+      </div>
+    </div>
+    ${value}
+    ${stats.length ? `<div class="stats">${stats.join('')}</div>` : ''}
+    ${tag}
+    ${item.notices ? `<div class="notice clip">${highlight(item.notices)}</div>` : ''}
+  </article>`;
+}
+
+/* Tira o "clicável" das descrições que já cabem inteiras.
+   As leituras e as escritas ficam em blocos separados de propósito:
+   se eu medisse e mexesse elemento por elemento, o navegador teria
+   que recalcular o layout 492 vezes seguidas e travaria. */
+function ajustarNotas(){
+  const notas = [...document.querySelectorAll('.notice')]
+                  .filter(n => !n.dataset.aberto);   // respeita o que você abriu na mão
+
+  notas.forEach(n => n.classList.add('clip'));       // 1) escreve tudo
+  const cortadas = notas.map(n => n.scrollHeight > n.clientHeight + 1);  // 2) lê tudo
+  notas.forEach((n, i) => { if(!cortadas[i]) n.classList.remove('clip'); }); // 3) escreve tudo
+}
+
+/* ================================================================
+   INVENTÁRIO
+   Guarda { "nome exato da planilha": quantidade } no próprio
+   navegador. Não some ao fechar a aba e não vai pra lugar nenhum —
+   é só seu, fica nessa máquina.
+   ================================================================ */
+/* ================================================================
+   LOGIN COM DISCORD  (opcional)
+
+   Preencha os dois valores abaixo com os do SEU projeto no Supabase:
+   painel -> Project Settings -> API.
+
+   A chave `anon` é PÚBLICA de propósito — pode ficar aqui à vista sem
+   problema. Quem protege os dados é a regra no banco (RLS), que só
+   deixa cada pessoa mexer no próprio inventário.
+
+   NUNCA ponha aqui a chave `service_role`. Essa ignora todas as regras
+   e daria acesso total ao banco pra qualquer visitante.
+
+   Deixando em branco, o site funciona normal: sem botão de login e com
+   o inventário salvo só neste navegador.
+   ================================================================ */
+const CONTA = {
+  url:  'https://zqmgivurfcfabicqyfpl.supabase.co',
+  chave:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpxbWdpdnVyZmNmYWJpY3F5ZnBsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MTA0ODgsImV4cCI6MjEwMjQ4NjQ4OH0.rk7C6Coiz7WXhMk6nt6zsAvDzjhLvfpqA7BpXZoND4o',
+};
+
+const INV_KEY = 'astd-inventario-v2';   // v2: a chave passou a incluir o tier
+let INVENTARIO = {};
+
+try{ INVENTARIO = JSON.parse(localStorage.getItem(INV_KEY)) || {}; }catch(e){ INVENTARIO = {}; }
+
+/* A chave leva o tier junto, e não só o nome. Motivo: 12 unidades
+   aparecem duas vezes na planilha — a normal e a Pure — e a Pure vale
+   mais (Death é 160.000 no S e 200.000 no Pure). Guardando só pelo
+   nome, o site pegava sempre a primeira e subcontava justamente as
+   unidades mais caras. */
+const chaveInv = item => item.tier + '|' + item.name;
+const achaPorChave = k => {
+  const i = k.indexOf('|');
+  const tier = k.slice(0, i), nome = k.slice(i + 1);
+  return ALL.find(x => x.tier === tier && x.name === nome);
+};
+
+function salvarInv(){
+  try{ localStorage.setItem(INV_KEY, JSON.stringify(INVENTARIO)); }catch(e){}
+}
+
+function mudarQtd(chave, delta){
+  const nova = (INVENTARIO[chave] || 0) + delta;
+  if(nova > 0) INVENTARIO[chave] = Math.min(nova, 9999);
+  else delete INVENTARIO[chave];
+  salvarInv();
+  atualizarInv();
+  empurrarInventario();   // se estiver logado, replica na conta
+}
+
+/* Soma só o que é número de verdade. Owner's Choice e "sem valor" não
+   entram na conta — chutar zero pra eles daria um total mentiroso.
+   Eles aparecem contados à parte, embaixo do total. */
+function contasDoInv(){
+  let total = 0, pecas = 0, owners = 0, semValor = 0, faixa = 0;
+  const itens = [];
+
+  for(const [chave, qtd] of Object.entries(INVENTARIO)){
+    const it = achaPorChave(chave);
+    if(!it) continue;                       // sumiu da planilha
+    pecas += qtd;
+    if(it.owners)          owners   += qtd;
+    else if(it.value === null) semValor += qtd;
+    else {
+      total += it.value * qtd;
+      if(it.valorTexto) faixa += qtd;       // "400,000 - ???" — é piso, não exato
+    }
+    itens.push({ it, qtd });
+  }
+  itens.sort((a,b) => (b.it.value || 0) * b.qtd - (a.it.value || 0) * a.qtd);
+  return { total, pecas, owners, semValor, faixa, itens };
+}
+
+function atualizarInv(){
+  const c = contasDoInv();
+
+  $('inv-badge').textContent = c.pecas;
+  $('btn-inv').classList.toggle('tem', c.pecas > 0);
+  $('inv-total').textContent = fmt(c.total);
+  $('inv-count').textContent = c.pecas
+    ? `${c.pecas} ${c.pecas === 1 ? 'unit' : 'units'} · ${c.itens.length} different`
+    : 'no units yet';
+
+  // avisos de honestidade: o que ficou de fora da soma
+  const notas = [];
+  if(c.owners)   notas.push(`<b>+ ${c.owners}</b> Owner's Choice (no fixed price)`);
+  if(c.faixa)    notas.push(`<b>${c.faixa}</b> counted at the low end of a price range`);
+  if(c.semValor) notas.push(`<b>+ ${c.semValor}</b> with no set value`);
+  $('inv-notes').innerHTML = notas.join('<br>');
+
+  // a lista
+  $('inv-list').innerHTML = c.itens.length
+    ? c.itens.map(({it, qtd}) => {
+        const src = customImage(it.name) || it.image || wikiImage(it.name);
+        const foto = src
+          ? `<div class="foto"><img src="${esc(src)}" alt="" loading="lazy"></div>`
+          : `<div class="foto" style="background:var(--card)">${esc(initials(it.main))}</div>`;
+        const vl = it.owners ? "Owner's Choice"
+                 : it.value === null ? 'no set value'
+                 : (it.valorTexto ? esc(it.valorTexto) : fmt(it.value)) +
+                   (qtd > 1 ? ` × ${qtd} = ${fmt(it.value * qtd)}` : '');
+        // o selo do tier separa visualmente a Death normal da Death Pure
+        const tab = TABS.find(t => t.key === it.tier);
+        const selo = `<span class="inv-tier" style="--tc:${tab.color}">${esc(tab.badge)}</span>`;
+        const k = esc(chaveInv(it));
+        return `<div class="inv-item">
+          ${foto}
+          <div class="txt">
+            <div class="nm" title="${esc(it.name)}">${selo}${esc(it.main)}</div>
+            <div class="vl">${vl}</div>
+          </div>
+          <div class="qtd">
+            <button data-inv="-1" data-chave="${k}" aria-label="Remove one">&minus;</button>
+            <span class="n">${qtd}</span>
+            <button data-inv="1" data-chave="${k}" aria-label="Add one">+</button>
+          </div>
+        </div>`;
+      }).join('')
+    : `<div class="inv-vazio">Nothing here yet.<br>
+         Hover any unit on the list and hit <b>+</b> to add it.</div>`;
+
+  // sincroniza os botões dos cards sem redesenhar a lista toda
+  document.querySelectorAll('.add-btn').forEach(b => {
+    const q = INVENTARIO[b.dataset.chave] || 0;
+    b.textContent = q ? q + '×' : '+';
+    b.classList.toggle('tem', q > 0);
+    b.closest('.card').classList.toggle('no-inv', q > 0);
+  });
+}
+
+/* ================================================================
+   SINCRONIZAR COM A CONTA
+
+   Regra de ouro na hora de juntar: NUNCA apagar unidade por engano.
+   Se o inventário do banco e o deste navegador estiverem diferentes,
+   fico com a MAIOR quantidade de cada um. Assim, se você adicionou
+   coisa no celular antes de logar, nada se perde.
+
+   Só depois de juntar é que eu salvo o resultado de volta.
+   ================================================================ */
+let CLIENTE = null;      // conexão com o banco (null = login desligado)
+let USUARIO = null;      // quem está logado
+let salvarTimer = null;
+
+function loginLigado(){ return !!(CONTA.url && CONTA.chave && window.supabase); }
+
+async function entrarComDiscord(){
+  await CLIENTE.auth.signInWithOAuth({
+    provider: 'discord',
+    options: { redirectTo: location.origin + location.pathname },
+  });
+}
+
+async function sair(){
+  await CLIENTE.auth.signOut();
+  USUARIO = null;
+  pintarConta();
+}
+
+function pintarConta(){
+  const b = $('btn-conta');
+  if(!loginLigado()){ b.hidden = true; return; }
+  b.hidden = false;
+  b.classList.toggle('logado', !!USUARIO);
+
+  if(USUARIO){
+    const m = USUARIO.user_metadata || {};
+    const nome = m.full_name || m.name || m.user_name || 'Signed in';
+    b.innerHTML = (m.avatar_url ? `<img src="${esc(m.avatar_url)}" alt="">` : '')
+                + `<span id="conta-txt">${esc(nome)}</span>`;
+    b.title = 'Signed in with Discord — click to sign out';
+  }else{
+    b.title = 'Save your inventory to your account';
+  }
+}
+
+/** Puxa o que está no banco.
+ *
+ *  A junção "fica com a maior quantidade" acontece UMA vez só, na
+ *  primeira vez que você liga esta conta neste navegador. Serve pra não
+ *  perder o que você montou antes de logar.
+ *
+ *  Depois disso a conta passa a mandar: ao abrir o site, o que vale é o
+ *  que está no banco. Isso é essencial — enquanto a junção valia sempre,
+ *  DIMINUIR uma quantidade era impossível: o site recarregava, via o
+ *  número maior no banco e "restaurava" o valor antigo.
+ */
+async function puxarInventario(){
+  const { data, error } = await CLIENTE.from('inventarios').select('chave, qtd');
+  if(error){ console.warn('não consegui ler o inventário:', error.message); return; }
+
+  const doBanco = Object.fromEntries((data || []).map(r => [r.chave, r.qtd]));
+  const marca = 'astd-juntou-' + USUARIO.id;
+  const primeiraVez = !localStorage.getItem(marca);
+
+  if(primeiraVez){
+    let trouxe = false;
+    for(const [k, q] of Object.entries(INVENTARIO)){
+      if(!doBanco[k] || q > doBanco[k]){ doBanco[k] = q; trouxe = true; }
+    }
+    INVENTARIO = doBanco;
+    try{ localStorage.setItem(marca, '1'); }catch(e){}
+    salvarInv(); atualizarInv();
+    if(trouxe) empurrarInventario();     // o daqui tinha novidade: sobe pro banco
+  }else{
+    INVENTARIO = doBanco;                // conta manda
+    salvarInv(); atualizarInv();
+  }
+}
+
+/** Manda o inventário inteiro pro banco, esperando você parar de clicar. */
+let temPendente = false;
+
+async function gravarAgora(){
+  if(!USUARIO || !temPendente) return;
+  temPendente = false;
+  clearTimeout(salvarTimer);
+  const { error } = await CLIENTE.rpc('salvar_inventario', { itens: INVENTARIO });
+  if(error){ temPendente = true; console.warn('não consegui salvar:', error.message); }
+}
+
+function empurrarInventario(){
+  if(!USUARIO) return;
+  temPendente = true;
+  clearTimeout(salvarTimer);
+  salvarTimer = setTimeout(gravarAgora, 1200);   // 1,2s parado = uma gravação só
+}
+
+/* Se você mexer e sair da aba antes de 1,2s, a gravação pendente seria
+   descartada e a mudança se perderia. Aqui eu forço na hora que a aba
+   deixa de ficar visível — que é o último momento confiável pra isso. */
+addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'hidden') gravarAgora();
+});
+addEventListener('pagehide', gravarAgora);
+
+async function iniciarConta(){
+  if(!loginLigado()){ pintarConta(); return; }
+
+  CLIENTE = window.supabase.createClient(CONTA.url, CONTA.chave, {
+    auth: { persistSession: true, detectSessionInUrl: true },
+  });
+
+  const { data:{ session } } = await CLIENTE.auth.getSession();
+  USUARIO = session?.user ?? null;
+  pintarConta();
+  if(USUARIO) await puxarInventario();
+
+  CLIENTE.auth.onAuthStateChange(async (evento, sess) => {
+    USUARIO = sess?.user ?? null;
+    pintarConta();
+    if(evento === 'SIGNED_IN' && USUARIO) await puxarInventario();
+  });
+
+  $('btn-conta').onclick = () => {
+    if(!USUARIO) return entrarComDiscord();
+    if(confirm('Sign out? Your inventory stays saved on your account.')) sair();
+  };
+}
+
+/* ================================================================
+   CALCULADORA DE TROCA
+
+   Duas contas separadas de propósito, porque medem coisas diferentes:
+
+   VALOR  — subtração simples entre os dois lados.
+
+   DEMANDA — média das demandas de cada lado, pesada pela quantidade
+   (2 cópias de uma unidade contam duas vezes). Ela NÃO entra na conta
+   do valor: serve pra responder "qual lado sai mais fácil depois?".
+   Entre duas trocas de 19k, a de demanda 3 é melhor que a de 1,5.
+
+   Cuidado importante: o C Tier não tem coluna de demanda na planilha
+   (146 unidades). Essas ficam de fora da média, e eu aviso quantas —
+   uma média que ignora metade dos itens sem dizer nada é pior que
+   média nenhuma.
+   ================================================================ */
+let TRADE = { a: {}, b: {} };
+
+function contarLado(lado){
+  let valor = 0, pecas = 0, semValor = 0, donos = 0;
+  let somaDem = 0, pesoDem = 0, semDemanda = 0;
+  const itens = [];
+
+  for(const [chave, qtd] of Object.entries(TRADE[lado])){
+    const it = achaPorChave(chave);
+    if(!it) continue;
+    pecas += qtd;
+    itens.push({ it, qtd });
+
+    if(it.owners)            donos++;
+    else if(it.value === null) semValor += qtd;
+    else                     valor += it.value * qtd;
+
+    if(it.demand !== null){ somaDem += it.demand * qtd; pesoDem += qtd; }
+    else semDemanda += qtd;
+  }
+
+  itens.sort((x, y) => (y.it.value || 0) * y.qtd - (x.it.value || 0) * x.qtd);
+  return {
+    valor, pecas, semValor, donos, itens, semDemanda,
+    demanda: pesoDem ? somaDem / pesoDem : null,
+  };
+}
+
+function calcVeredito(){
+  const A = contarLado('a'), B = contarLado('b');
+  const dif = B.valor - A.valor;                 // positivo = você ganha
+  const base = Math.max(A.valor, B.valor);
+  const pct = base ? (dif / base) * 100 : 0;
+
+  // Com Owner's Choice na jogada não dá pra cravar nada: aquilo não tem
+  // preço. Dizer "FAIR" com valor zero seria mentira — melhor assumir
+  // que a conta não fecha e deixar a pessoa julgar.
+  let classe, rotulo;
+  if(A.donos || B.donos){
+    classe = 'incerto'; rotulo = 'N/A';
+  }else{
+    // Menos de 5% de diferença é ruído de mercado, não vantagem real.
+    classe = Math.abs(pct) < 5 ? 'fair' : (dif > 0 ? 'win' : 'lose');
+    rotulo = classe === 'fair' ? 'FAIR' : (classe === 'win' ? 'WIN' : 'LOSS');
+  }
+  return { A, B, dif, pct, classe, rotulo, base };
+}
+
+function pintarCalc(){
+  const { A, B, dif, pct, classe, rotulo, base } = calcVeredito();
+
+  // ---- faixa do veredito ----
+  const alvo = $('calc-resumo');
+  if(!A.pecas && !B.pecas){
+    alvo.innerHTML = `<div class="calc-vazio">
+      Add units to both sides to compare.<br>
+      Value is a straight subtraction; demand is the average of each side.</div>`;
+  }else{
+    const sinal = dif > 0 ? '+' : (dif < 0 ? '−' : '');
+    const dem = (x) => x.demanda === null ? '—' : x.demanda.toFixed(2).replace(/\.00$/, '');
+    const avisos = [];
+
+    const semDem = A.semDemanda + B.semDemanda;
+    if(semDem) avisos.push(`${semDem} unit${semDem>1?'s':''} left out of the demand average (the sheet has no demand for them)`);
+    const semV = A.semValor + B.semValor;
+    if(semV) avisos.push(`${semV} with no set value, not counted`);
+    const dn = A.donos + B.donos;
+    if(dn) avisos.push(`${dn} Owner's Choice — no fixed price, judge by hand`);
+
+    alvo.innerHTML = `
+      <span class="veredito ${classe}">${rotulo}</span>
+      <div class="calc-num">
+        <span class="r">value difference</span>
+        <span class="v" style="color:${dif>0?'#4ecb71':dif<0?'#ff5c5c':'var(--gold)'}">
+          ${sinal}${fmt(Math.abs(dif))}${base?` <span style="font-size:13px;opacity:.7">(${sinal}${Math.abs(pct).toFixed(1)}%)</span>`:''}
+        </span>
+      </div>
+      <div class="calc-num">
+        <span class="r">demand · give → get</span>
+        <span class="v">${dem(A)} → ${dem(B)}${
+          (A.demanda!==null && B.demanda!==null)
+            ? ` <span style="font-size:13px;color:${B.demanda>A.demanda?'#4ecb71':B.demanda<A.demanda?'#ff5c5c':'var(--text-faint)'}">
+                ${B.demanda>A.demanda?'easier to move':B.demanda<A.demanda?'harder to move':'same'}</span>`
+            : ''}</span>
+      </div>
+      ${avisos.length?`<div class="calc-aviso">${avisos.join(' · ')}</div>`:''}`;
+  }
+
+  // ---- as duas listas ----
+  for(const lado of ['a','b']){
+    const c = lado === 'a' ? A : B;
+    document.querySelector(`[data-lista="${lado}"]`).innerHTML = c.itens.map(({it, qtd}) => {
+      const src = customImage(it.name) || it.image || wikiImage(it.name);
+      const foto = src ? `<div class="foto"><img src="${esc(src)}" alt="" loading="lazy"></div>`
+                       : `<div class="foto" style="background:var(--card)">${esc(initials(it.main))}</div>`;
+      const vl = it.owners ? "Owner's Choice"
+               : it.value === null ? (it.valorTexto ? esc(it.valorTexto) : 'no value')
+               : fmt(it.value * qtd);
+      const dm = it.demand !== null ? ` · dem ${fmt(it.demand)}` : ' · no demand';
+      return `<div class="calc-item">
+        ${foto}
+        <div class="txt">
+          <div class="nm">${esc(it.main)}${qtd>1?` ×${qtd}`:''}</div>
+          <div class="vl">${vl}${dm}</div>
+        </div>
+        <button class="x" data-tira="${lado}" data-chave="${esc(chaveInv(it))}" aria-label="Remove">&times;</button>
+      </div>`;
+    }).join('');
+
+    document.querySelector(`[data-total="${lado}"]`).innerHTML = c.pecas
+      ? `<span>${c.pecas} unit${c.pecas>1?'s':''}</span><b>${fmt(c.valor)}</b>`
+      : '';
+  }
+}
+
+function mexerTrade(lado, chave, delta){
+  const n = (TRADE[lado][chave] || 0) + delta;
+  if(n > 0) TRADE[lado][chave] = Math.min(n, 999);
+  else delete TRADE[lado][chave];
+  pintarCalc();
+}
+
+/* Sugestões enquanto você digita.
+ *
+ *  Duas diferenças pra busca lá de cima:
+ *
+ *  1. Procura só no NOME (jogo e anime), não nas notas. Aqui você quer
+ *     achar uma unidade específica; incluir a descrição trazia coisa
+ *     que só mencionava a palavra de passagem.
+ *
+ *  2. Ordena por relevância, não pela ordem da planilha. Quem começa
+ *     com o que você digitou vem antes de quem tem aquilo no meio. */
+const escaparRegex = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+function pontuarBusca(item, q){
+  const nome = item.name.toLowerCase();
+  const jogo = item.main.toLowerCase();
+  const anime = (item.sub || '').toLowerCase();
+
+  let p;
+  if(jogo === q || anime === q)                                   p = 100;  // exato
+  else if(jogo.startsWith(q))                                     p = 85;   // começa igual
+  else if(anime.startsWith(q))                                    p = 75;
+  else if(new RegExp('(^|[^a-z0-9])' + escaparRegex(q)).test(nome)) p = 60; // início de palavra
+  else                                                            p = 30;   // no meio
+
+  // desempate: nome curto costuma ser o que a pessoa quis ("Death"
+  // antes de "Darkness Slayer of Death"), e valor alto antes.
+  return p + Math.max(0, 24 - item.main.length) / 12;
+}
+
+/* Esconder E limpar. Só tirar a classe deixava a lista antiga no HTML;
+   invisível, mas ainda ali — e reaparecia por um instante na próxima vez. */
+function esconderSug(caixa){
+  caixa.classList.remove('on');
+  caixa.innerHTML = '';
+}
+
+function sugerir(lado, termo){
+  const caixa = document.querySelector(`[data-sug="${lado}"]`);
+  const q = termo.trim().toLowerCase();
+  if(!q){ esconderSug(caixa); return; }                  // 1 letra já basta
+
+  const palavras = q.split(/\s+/).filter(Boolean);
+  const achados = ALL
+    .filter(i => { const n = i.name.toLowerCase(); return palavras.every(p => n.includes(p)); })
+    .map(i => ({ i, p: pontuarBusca(i, q) }))
+    .sort((a, b) => b.p - a.p || (b.i.value || 0) - (a.i.value || 0))
+    .slice(0, 8)
+    .map(x => x.i);
+
+  if(!achados.length){ esconderSug(caixa); return; }
+
+  caixa.innerHTML = achados.map(i => {
+    const tab = TABS.find(t => t.key === i.tier);
+    const vl = i.owners ? "O/C" : i.value === null ? '—' : fmt(i.value);
+    return `<button data-add="${lado}" data-chave="${esc(chaveInv(i))}">
+      <span class="inv-tier" style="--tc:${tab.color}">${esc(tab.badge)}</span>
+      <span class="nm">${esc(i.main)}</span>
+      <span class="vl">${vl}</span>
+    </button>`;
+  }).join('');
+  caixa.classList.add('on');
+}
+
+function render(){
+  const list = apply();
+  const box = $('results');
+
+  if(!list.length){
+    box.innerHTML = `
+      <div class="state">
+        <h3>Nothing found</h3>
+        <p>No item matches <code>${esc(filters.q)}</code>${filters.tier ? ' in this tier' : ''}.</p>
+      </div>`;
+    return;
+  }
+
+  // agrupa por tier e, dentro dele, pelas subseções da planilha
+  // (Top / Mid / Low S Tier, Boxes/Crates, Gamepasses…)
+  let html = '';
+  for(const tab of TABS){
+    const group = list.filter(i => i.tier === tab.key);
+    if(!group.length) continue;
+
+    html += `<section class="tier-block" style="--tc:${tab.color}">
+      <div class="tier-head">
+        <div class="tier-badge">${tab.badge}</div>
+        <h2 class="tier-title">${tab.full}</h2>
+        <span class="tier-count">${group.length} ${group.length === 1 ? 'item' : 'items'}</span>
+      </div>`;
+
+    /* Subseções da planilha (Boxes/Crates, Gamepasses, Capsules,
+       Eggs II, Eggs, Skins — e Top/High/Mid/Low nos tiers).
+       Elas aparecem em QUALQUER ordenação: os cabeçalhos seguem
+       sempre a ordem da planilha, e o que você escolheu no menu de
+       ordenação vale dentro de cada bloco. */
+    const useSections = group.some(i => i.section) &&
+                        new Set(group.map(i => i.section)).size > 1;
+
+    if(useSections){
+      // agrupa mantendo a ordem em que a lista já veio ordenada
+      const blocos = new Map();
+      for(const item of group){
+        if(!blocos.has(item.sectionIdx)) blocos.set(item.sectionIdx, []);
+        blocos.get(item.sectionIdx).push(item);
+      }
+      // e ordena os BLOCOS pela posição original na planilha
+      for(const idx of [...blocos.keys()].sort((a,b) => a - b)){
+        const itens = blocos.get(idx);
+        const nome = itens[0].section;
+        if(nome) html += `<div class="sub-head">${esc(nome)}
+          <span class="sub-count">${itens.length}</span></div>`;
+        html += '<div class="grid">' + itens.map(i => cardHTML(i, tab)).join('') + '</div>';
+      }
+    }else{
+      html += '<div class="grid">' + group.map(i => cardHTML(i, tab)).join('') + '</div>';
+    }
+    html += '</section>';
+  }
+  box.innerHTML = html;
+  ajustarNotas();
+  atualizarInv();
+}
+
+/* ================================================================
+   7) LEGENDA (montada a partir das tabelas da aba Tutorial)
+   ================================================================ */
+$('legend').innerHTML = `
+  <div>
+    <h4>Rarity (0–20)</h4>
+    <dl>${Object.entries(RARITY_TXT).map(([k,v]) => `<dt>${k}</dt> ${v}<br>`).join('')}</dl>
+  </div>
+  <div>
+    <h4>Supply (1–5)</h4>
+    <dl>${Object.entries(SCALE_TXT).map(([k,v]) => `<dt>${k}</dt> ${v}<br>`).join('')}</dl>
+    <p class="legend-note">
+      Supply looks at how many units are in circulation compared to what
+      would be normal for that unit's rarity.</p>
+    <h4 style="margin-top:24px">Demand (1–5)</h4>
+    <dl>${Object.entries(SCALE_TXT).map(([k,v]) => `<dt>${k}</dt> ${v}<br>`).join('')}</dl>
+  </div>`;
+
+/* ================================================================
+   8) LIGANDO OS CONTROLES
+   ================================================================ */
+let typing;
+$('search').addEventListener('input', e => {
+  const v = e.target.value;
+  $('clear-search').classList.toggle('on', !!v);
+  clearTimeout(typing);
+  typing = setTimeout(() => { filters.q = v.trim(); render(); }, 160);
+});
+$('clear-search').onclick = () => {
+  $('search').value = ''; $('clear-search').classList.remove('on');
+  filters.q = ''; render(); $('search').focus();
+};
+$('sort').onchange = e => { filters.sort = e.target.value; render(); };
+$('refresh').onclick = () => load(true);
+
+// clicar numa nota CORTADA expande ela. Se ela já cabe inteira não tem
+// o que abrir, então nem responde ao clique (e nem mostra cursor de mão).
+document.addEventListener('click', e => {
+  const n = e.target.closest('.notice');
+  if(!n) return;
+  if(n.classList.contains('clip')){
+    n.classList.remove('clip');
+    n.dataset.aberto = '1';        // marca pra ajustarNotas() não fechar de novo
+  }else if(n.dataset.aberto){
+    n.classList.add('clip');
+    delete n.dataset.aberto;
+  }
+});
+
+// Ao mudar a largura da janela os cards mudam de tamanho, então o que
+// cabia pode parar de caber (e vice-versa). Remede depois que parar.
+let redim;
+addEventListener('resize', () => {
+  clearTimeout(redim);
+  redim = setTimeout(ajustarNotas, 180);
+});
+
+// "/" foca a busca, Esc limpa
+document.addEventListener('keydown', e => {
+  if(e.key === '/' && document.activeElement !== $('search')){
+    e.preventDefault(); $('search').focus();
+  }
+  if(e.key === 'Escape' && document.activeElement === $('search')) $('clear-search').click();
+});
+
+/* Fundo de vidro da barra: liga só quando ela cola no topo.
+   Uso DOIS mecanismos de propósito — se o de vidro não ligar, a barra
+   fica transparente com os cards passando por trás, que é feio demais
+   pra depender de um só. */
+const toolbar = $('toolbar'), sentinel = $('tb-sentinel'), toTop = $('to-top');
+
+function syncBar(){
+  // Mede a posição real do marcador. Antes eu comparava scrollY > 12,
+  // mas o marcador fica depois do cabeçalho (~240px do topo), então o
+  // vidro ligava muito antes da barra realmente encostar no topo.
+  toolbar.classList.toggle('stuck', sentinel.getBoundingClientRect().top < 0);
+  toTop.classList.toggle('on', window.scrollY > 700);
+}
+
+// Principal: barato e acerta também quando a página pula direto pra um
+// ponto (F5 no meio da lista, Ctrl+End), onde o scroll pode não disparar.
+if('IntersectionObserver' in window){
+  new IntersectionObserver(
+    ([e]) => toolbar.classList.toggle('stuck', !e.isIntersecting),
+    { threshold:0 }
+  ).observe(sentinel);
+}
+
+// Rede de segurança + botão de voltar ao topo.
+// O requestAnimationFrame evita medir o layout a cada evento de rolagem.
+let ticking = false;
+addEventListener('scroll', () => {
+  if(ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => { syncBar(); ticking = false; });
+}, { passive:true });
+
+syncBar(); // deixa o estado certo já no carregamento
+
+$('to-top').onclick = () => window.scrollTo({ top:0, behavior:'smooth' });
+
+/* ---------------- eventos do inventário ---------------- */
+const abrirInv = v => {
+  $('drawer').classList.toggle('on', v);
+  $('drawer-bg').classList.toggle('on', v);
+  $('drawer').setAttribute('aria-hidden', v ? 'false' : 'true');
+};
+$('btn-inv').onclick  = () => abrirInv(!$('drawer').classList.contains('on'));
+$('drawer-x').onclick = () => abrirInv(false);
+$('drawer-bg').onclick = () => abrirInv(false);
+
+$('inv-clear').onclick = () => {
+  const c = contasDoInv();
+  if(!c.pecas) return;
+  if(confirm(`Remove all ${c.pecas} units from your inventory?`)){
+    INVENTARIO = {}; salvarInv(); atualizarInv(); empurrarInventario();
+  }
+};
+
+// um handler só pros dois lugares: o "+" do card e os ± da lista
+document.addEventListener('click', e => {
+  const add = e.target.closest('.add-btn');
+  if(add){ e.preventDefault(); mudarQtd(add.dataset.chave, 1); return; }
+
+  const btn = e.target.closest('[data-inv]');
+  if(btn) mudarQtd(btn.dataset.chave, Number(btn.dataset.inv));
+});
+
+// Esc fecha o painel (e a busca, que já existia)
+addEventListener('keydown', e => {
+  if(e.key === 'Escape' && $('drawer').classList.contains('on')) abrirInv(false);
+});
+
+/* ---------------- eventos da calculadora ---------------- */
+const abrirCalc = v => {
+  $('calc').classList.toggle('on', v);
+  $('calc-bg').classList.toggle('on', v);
+  $('calc').setAttribute('aria-hidden', v ? 'false' : 'true');
+  if(v) pintarCalc();
+};
+$('btn-calc').onclick = () => abrirCalc(!$('calc').classList.contains('on'));
+$('calc-x').onclick   = () => abrirCalc(false);
+$('calc-bg').onclick  = () => abrirCalc(false);
+$('calc-limpar').onclick = () => { TRADE = { a:{}, b:{} }; pintarCalc(); };
+
+document.querySelectorAll('[data-busca]').forEach(inp => {
+  let t;
+  inp.addEventListener('input', () => {
+    clearTimeout(t);
+    t = setTimeout(() => sugerir(inp.dataset.busca, inp.value), 90);
+  });
+  // voltar pro campo já mostra o que casava antes
+  inp.addEventListener('focus', () => { if(inp.value) sugerir(inp.dataset.busca, inp.value); });
+  // Enter escolhe a primeira da lista, sem precisar do mouse
+  inp.addEventListener('keydown', e => {
+    if(e.key !== 'Enter') return;
+    e.preventDefault();
+    const primeira = document.querySelector(`[data-sug="${inp.dataset.busca}"].on button`);
+    if(primeira) primeira.click();
+  });
+});
+
+document.addEventListener('click', e => {
+  const add = e.target.closest('[data-add]');
+  if(add){
+    mexerTrade(add.dataset.add, add.dataset.chave, 1);
+    const inp = document.querySelector(`[data-busca="${add.dataset.add}"]`);
+    inp.value = ''; inp.focus();
+    esconderSug(document.querySelector(`[data-sug="${add.dataset.add}"]`));
+    return;
+  }
+  const tira = e.target.closest('[data-tira]');
+  if(tira){ mexerTrade(tira.dataset.tira, tira.dataset.chave, -999); return; }
+
+  // clicou fora: fecha as sugestões abertas
+  if(!e.target.closest('.calc-busca'))
+    document.querySelectorAll('.calc-sug.on').forEach(esconderSug);
+});
+
+addEventListener('keydown', e => {
+  if(e.key === 'Escape' && $('calc').classList.contains('on')) abrirCalc(false);
+});
+
+atualizarInv();   // reflete o que estava salvo de sessões anteriores
+iniciarConta();   // liga o login, se estiver configurado
+
+load(false);
+</script>
+</body>
+</html>
