@@ -7,18 +7,20 @@ it is for. For the security side, see `SECURITY.md`.
 
 ## The goal
 
-**Make a trade value checkable in seconds, without leaving Discord.**
+**To make the tier list easier to use. That is the whole of it.**
 
-The community already maintains a trade value spreadsheet, and it is good.
-The problem is using it mid-trade: it is eight tabs wide, painful on a
-phone, and someone asking "is this a W?" in chat has to leave the
-conversation to find out.
+The community spreadsheet is good, and this does not try to replace it —
+it is the same data, read live from the same sheet. But using it mid-trade
+is awkward: eight tabs wide, rough on a phone, and you have to leave the
+conversation to check anything.
 
-So this is a front end for that spreadsheet, plus a bot that answers the
-same questions where the trade is actually happening.
+So this is for the people already using that tier list. A faster way in:
+search instead of scrolling, and a bot that answers in the channel where
+the trade is happening.
 
-**It is not a marketplace.** No trading, no escrow, no middleman, no
-currency, no ads. It reads a spreadsheet and does arithmetic.
+**It is not a marketplace and is not trying to become one.** No trading,
+no escrow, no middleman, no currency, no ads. It reads a spreadsheet and
+does arithmetic.
 
 ---
 
@@ -120,5 +122,4 @@ Not stored: passwords, messages, server content, IP addresses.
 
 If the server wants to run this itself rather than depend on me, that is
 fine and the repository is set up for it — `discord/SETUP.md` is the full
-install, and the GitHub repository can be transferred outright. I would
-rather it outlive my interest in maintaining it.
+install, and the GitHub repository can be transferred outright.
