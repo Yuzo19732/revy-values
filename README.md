@@ -153,3 +153,18 @@ None. It is invited with `applications.commands` only, which means it:
 
 It exists only to answer slash commands. That is why it shows as offline
 in the member list — it holds no gateway connection to Discord.
+
+---
+
+## Keeping this repository in sync
+
+The site is edited in a working folder and copied here. After changing
+`index.html`:
+
+```
+python tools/readable-copy.py --write
+python tools/verify-translation.py
+git add -A && git commit -m "..." && git push
+```
+
+The first command rebuilds the readable copy so the two never drift apart.
