@@ -8,6 +8,8 @@ The site reads a public, community-maintained spreadsheet and shows every
 unit's trade value. Signing in with Discord lets you keep an inventory,
 which the bot can then read back through slash commands.
 
+**What it does, and what it can't do:** `OVERVIEW.md`
+
 **Reviewing this? Start with `SECURITY.md`** — it covers the architecture, what data is
 stored, how each part is protected, and what is worth questioning.
 
@@ -17,6 +19,7 @@ stored, how each part is protected, and what is worth questioning.
 
 | File | What it is |
 |---|---|
+| `OVERVIEW.md` | what it can do, its limitations, and the goal |
 | `SECURITY.md` | **read first** — full security overview |
 | `discord/01-database.sql` | tables, access policies and database functions |
 | `discord/bot/index.ts` | the entire bot (Deno / Supabase Edge Function) |
