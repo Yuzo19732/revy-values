@@ -1,16 +1,18 @@
-# ── Secrets — never commit ─────────────────────────────────
-discord/credentials.txt
-discord/credenciais.txt
-.env
-*.env
-*.key
-
-# ── Source artwork ─────────────────────────────────────────
-# The site already embeds every image; these are just the originals.
-imagens/
-images/
-
-# ── Local leftovers ────────────────────────────────────────
-site-pronto/
-*.zip
+supabase.txt
+chave-google.txt
+discord.txt
 __pycache__/
+
+# dependencias instaladas (o npm reinstala com "npm install")
+node_modules/
+
+# gerado pelo gerar-logica.py a partir de bot/index.ts
+bot-mensagens/logica.js
+
+# copias de trabalho (comentadas em portugues); o que vai pro repo
+# e a bot-current/, gerada sem comentario
+bot/
+bot-mensagens/
+registrar-comando.py
+limpar-comandos.py
+subir-imagens.py
