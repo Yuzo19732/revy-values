@@ -1,18 +1,11 @@
-supabase.txt
-chave-google.txt
-discord.txt
-__pycache__/
+# Este repositorio carrega SO o bot.
+#
+# Em vez de listar o que fica de fora, ignoro tudo e libero os tres
+# arquivos na mao. Assim nada novo entra sem eu querer — nem credencial,
+# nem copia de trabalho, nem arquivo gerado que eu esqueci de listar.
+*
 
-# dependencias instaladas (o npm reinstala com "npm install")
-node_modules/
-
-# gerado pelo gerar-logica.py a partir de bot/index.ts
-bot-mensagens/logica.js
-
-# copias de trabalho (comentadas em portugues); o que vai pro repo
-# e a bot-current/, gerada sem comentario
-bot/
-bot-mensagens/
-registrar-comando.py
-limpar-comandos.py
-subir-imagens.py
+!.gitignore
+!unitinfo.ts
+!messages.js
+!logic.generated.js
