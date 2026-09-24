@@ -1,8 +1,9 @@
-# Este repositorio carrega SO o bot.
+# This repository carries the bot and nothing else.
 #
-# Em vez de listar o que fica de fora, ignoro tudo e libero os tres
-# arquivos na mao. Assim nada novo entra sem eu querer — nem credencial,
-# nem copia de trabalho, nem arquivo gerado que eu esqueci de listar.
+# Rather than listing what stays out, everything is ignored and the
+# three files are re-admitted by name. Nothing new can be added without
+# being listed here — not a credential, not a working copy, not a
+# generated file someone forgot to exclude.
 *
 
 !.gitignore
